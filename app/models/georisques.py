@@ -13,7 +13,6 @@ class Etablissements(db.Model):
     siret = db.Column(db.Integer, nullable=True)
     siren = db.Column(db.Integer, nullable=True)
     adresse = db.Column(db.String, nullable=False)
-    code_postal = db.Column(db.String(5), nullable=False)
     code_ape = db.Column(db.String(5), nullable=False)
     milieu_pollué = db.Column(db.String(3), nullable=True)
     secteur_na38 = db.Column(db.String, nullable=False)
@@ -22,7 +21,8 @@ class Etablissements(db.Model):
     latitude = db.Column(db.Float, nullable=True)
     longitude = db.Column(db.Float, nullable=True)
     
-    departement = db.relationship("Departements", backref="etablissements")
+    departement = db.relationship("Departements", db.ForeignKey('departements.id'))
+    code_postal = db.relationship("Communes", db.ForeignKey('communes.id'))
 
     etablissements_polluants = db.relationship(
         'Polluants',
@@ -55,3 +55,15 @@ class Polluants(db.Model):
 
     def __repr__(self):
         return '<Polluants %r>' % self.nom
+        
+class Communes(db.Model):
+    __tablename__ = "communes"
+    id = db.Column(db.String(5), primary_key=True)
+    nom = db.Column(db.String, nullabe=False)
+    latitude = db.Column(db.Float, nullable=True)
+    longitude = db.Column(db.Float, nullable=True)*
+
+    departement = db.relationship("Departements", db.ForeignKey('departements.id'))
+
+    def __repr__(self):
+        return '<Communes %r>' % self.nom

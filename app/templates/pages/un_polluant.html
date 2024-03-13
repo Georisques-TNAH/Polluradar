@@ -1,0 +1,51 @@
+{% extends "partials/conteneur.html" %}
+
+{% block body %}
+
+<div class="container">
+    <h1>Liste exhaustive de l'ensemble des établissements rejetant {{sous_titre}}</h1>
+    <br>
+    <div class="row">
+        <div class="col-4">
+            <div class="list-group" id="list-tab" role="tablist">
+
+                {% for pays in donnees %}
+                {% if (donnees).index(pays) == 0 %}
+                <a class="list-group-item list-group-item-action active" id="list-{{etablissement.id}}-list" data-toggle="list"
+                    href="#list-{{etablissement.id}}" role="tab" aria-controls="{{etablissement.id}}">{{etablissement.nom}}</a>
+                {% else %}
+                <a class="list-group-item list-group-item-action" id="list-{{etablissement.id}}-list" data-toggle="list"
+                    href="#list-{{etablissement.id}}" role="tab" aria-controls="{{etablissement.id}}">{{pays.nom}}</a>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-8">
+            <div class="tab-content" id="nav-tabContent">
+                {% for etablissement in donnees %}
+                {% if (donnees).index(etablissement) == 0 %}
+                <div class="tab-pane fade show active" id="list-{{etablissement.id}}" role="tabpanel"
+                    aria-labelledby="list-{{etablissement.id}}-list">
+                    <a href="{{ url_for('un_etablissement', nom_etablissement=etablissement.nom) }}"> Voir les données de {{etablissement.nom}}</a>
+                    <br>
+                    {{etablissement.Introduction}}
+                </div>
+                {% else %}
+                <div class="tab-pane fade " id="list-{{etablissement.id}}" role="tabpanel"
+                    aria-labelledby="list-{{etablissement.id}}-list">
+                    <a href="{{ url_for('un_etablissement', nom_etablissement=etablissement.nom) }}"> Voir les données de {{etablissement.nom}}</a>
+                    <br>
+                    {{etablissement.Introduction}}
+                </div>
+                {% endif %}
+
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+
+{% endblock %}

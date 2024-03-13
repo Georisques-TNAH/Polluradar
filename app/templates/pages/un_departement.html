@@ -9,8 +9,8 @@
         <div class="col-4">
             <div class="list-group" id="list-tab" role="tablist">
 
-                {% for etablissement in donnees_generales %}
-                {% if (donnees_generales).index(etablissement) == 0 %}
+                {% for etablissement in donnees %}
+                {% if (donnees).index(etablissement) == 0 %}
                 <a class="list-group-item list-group-item-action active" id="list-{{etablissement.id}}-list" data-toggle="list"
                     href="#list-{{etablissement.id}}" role="tab" aria-controls="{{etablissement.id}}">{{etablissement.nom}}</a>
                 {% else %}
@@ -22,8 +22,8 @@
         </div>
         <div class="col-8">
             <div class="tab-content" id="nav-tabContent">
-                {% for etablissement in donnees_generales %}
-                {% if (donnees_generales).index(etablissement) == 0 %}
+                {% for etablissement in donnees %}
+                {% if (donnees).index(etablissement) == 0 %}
                 <div class="tab-pane fade show active" id="list-{{etablissement.id}}" role="tabpanel"
                     aria-labelledby="list-{{etablissement.id}}-list">
                     <a href="{{ url_for('un_etablissement', nom_etablissement=etablissement.nom) }}"> Voir les données de {{etablissement.nom}}</a>

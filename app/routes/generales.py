@@ -29,13 +29,11 @@ def departements(page=1):
     etablissements_par_departement = {}
 
     for etablissement in Etablissements.query.all():
-        for departement in str(etablissement.departement):   #cette ligne fait tout buguer pourtant elle me semble cohérente, l'erreur : int object is not iterable
-            #erreur de int résolue mais ne change pas le pb je crois
-            if Departements.nom in etablissements_par_departement:
-                if etablissement.nom not in etablissements_par_departement[Departements.nom]: #De base departement.nom
-                    etablissements_par_departement[Departements.nom].append(etablissement.nom)
-            else:
-                etablissements_par_departement[Departements.nom] = [etablissement.nom]
+        departement = Departements.query.filter_by(id=etablissement.departement).first()
+        if departement.nom in etablissements_par_departement:
+            etablissements_par_departement[departement.nom].append(etablissement)
+        else:
+            etablissements_par_departement[departement.nom] = [etablissement]
 
     return render_template("pages/departements.html",
         sous_titre="Départements",
@@ -45,13 +43,11 @@ def departements(page=1):
         
 @app.route("/departements/<string:nom_departement>")
 def un_departement(nom_departement):
-    departement_x = Departements.query.filter(Departements.nom == nom_departement).first()
+    departement_x = Departements.query.filter_by(nom=nom_departement).first()
 
-    return render_template("pages/un_departement.html", 
-        sous_titre=nom_departement, 
-        donnees= Etablissements.query.filter(Etablissements.departement.contains(departement_x)).order_by(Etablissements.nom).all(), nom_departement=departement_x.nom)
-#pas sûre du departements dans Etablissements.departements.contains(departements)).
-
+    etablissements_departement = Etablissements.query.filter_by(departement=departement_x.id).order_by(Etablissements.nom).all()
+    return render_template("pages/un_departement.html", sous_titre=nom_departement, donnees=etablissements_departement, nom_departement=nom_departement)
+    
 """
 @app.route("/polluants")
 @app.route("/polluants/<int:page>")

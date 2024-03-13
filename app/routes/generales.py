@@ -1,6 +1,6 @@
 from ..app import app, db
 from flask import Flask, render_template, request
-from ..models.georisques import Etablissements, Departements
+from ..models.georisques import Etablissements, Departements, Polluants
 
 @app.route("/")
 def accueil():
@@ -48,7 +48,7 @@ def un_departement(nom_departement):
     etablissements_departement = Etablissements.query.filter_by(departement=departement_x.id).order_by(Etablissements.nom).all()
     return render_template("pages/un_departement.html", sous_titre=nom_departement, donnees=etablissements_departement, nom_departement=nom_departement)
     
-"""
+
 @app.route("/polluants")
 @app.route("/polluants/<int:page>")
 def polluants(page=1):
@@ -69,11 +69,10 @@ def polluants(page=1):
 
 @app.route("/polluants/<string:nom_polluant>")
 def un_polluant(nom_polluant):
-    polluant = Polluants.query.filter(Polluants.nom == nom_polluant).first()
+    polluant_x = Polluants.query.filter_by(nom=nom_polluant).first()
+    etablissements_polluant = Etablissements.query.filter(Etablissements.polluant.contains(polluant_x)).order_by(Etablissements.nom).all()
+    return render_template("pages/un_polluant.html", sous_titre=nom_polluant, donnees=etablissements_polluant)
+    
 
-    return render_template("pages/un_polluant.html", 
-        sous_titre=nom_polluant, 
-        donnees= Etablissements.query.filter(Etablissements.polluant.contains(polluant)).order_by(Etablissements.nom).all())
-"""
     #pas sûre du polluant 1 dans Etablissements.polluant.contains(polluant)).
 

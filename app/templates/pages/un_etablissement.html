@@ -25,7 +25,9 @@
                 <div class="card-body">
                     <p><b>Identifiant</b> : {{donnees.id}}</p>
                     <p><b>Nom</b> : {{donnees.nom}}</p>
+                    {% if  donnees.produitLabel %}
                     <p><b>Produit</b> : {{donnees.produitLabel}}</p>
+                    {% endif %}
                     <p><b>Secteur na38</b> : {{donnees.secteur_na38}}</p>
                 </div>
             </div>
@@ -47,7 +49,9 @@
                     <p><b>SIRET </b>: {{donnees.siret}}</p>
                     <p><b>SIREN </b>: {{donnees.siren}}</p>
                     <p><b>Code APE </b>: {{donnees.code_ape}}</p>
+                    {% if  donnees.dateCreation %}
                     <p><b>Date de création </b>: {{donnees.dateCreation}}</p>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -74,6 +78,7 @@
         </div>
 
         <!-- coordonnées -->
+        {% if  donnees.latitude %}
         <div class="card">
             <div class="card-header" id="headingcoordonnees">
                 <h5 class="mb-0">
@@ -91,6 +96,7 @@
                 </div>
             </div>
         </div>
+        {% endif %}
 
         <!-- polluants -->
         <div class="card">
@@ -103,9 +109,15 @@
                 </h5>
             </div>
 
-            <div id="collapsepolluants" class="collapse " aria-labelledby="headingpolluants" data-parent="#accordion">
+            <div
+id="collapsepolluants"
+class="collapse "
+aria-labelledby="headingpolluants"
+data-parent="#accordion">
+
                 <div class="card-body">
-                    <p><b>Polluant(s) </b>:
+
+                    <p><b>Polluant(s)</b>:
                         {% if donnees.polluants %}
                     <ul>
                         {%for polluant in donnees.polluants%}

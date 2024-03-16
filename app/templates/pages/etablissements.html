@@ -17,8 +17,8 @@
                 {% endif %}
 
                 {% for etablissement in etablissements.items %}
-                <a class="list-group-item list-group-item-action active" id="list-{{etablissements.id}}-list" data-toggle="list"
-                    href="#list-{{etablissements.id}}" role="tab" aria-controls="{{etablissements.id}}">{{etablissement.nom}}</a>
+                <a class="list-group-item list-group-item-action {% if loop.first %}active{% endif %}" id="list-{{etablissement.id}}-list" data-toggle="list"
+                    href="#list-{{etablissement.id}}" role="tab" aria-controls="{{etablissement.id}}">{{etablissement.nom}}</a>
                 {% endfor %}
 
                 {%if etablissements.next_num %}
@@ -33,13 +33,12 @@
         <div class="col-8">
             <div class="tab-content" id="nav-tabContent">
                 {% for etablissement in etablissements.items %}
-                <div class="tab-pane fade show active" id="list-{{etablissements.id}}" role="tabpanel"
-                    aria-labelledby="list-{{etablissements.id}}-list">
+                <div class="tab-pane fade {% if loop.first %}show active{% endif %}" id="list-{{etablissement.id}}" role="tabpanel"
+                    aria-labelledby="list-{{etablissement.id}}-list">
                     <a href="{{ url_for('un_etablissement', nom_etablissement=etablissement.nom) }}"> Voir les données de {{etablissement.nom}}</a>
                     <br>
                     {{etablissement.commune}} 
                 </div>
-
                 {% endfor %}
             </div>
         </div>
@@ -76,7 +75,5 @@
     </div>
     <div class="col-sm-3"></div>
 </div>
-</div>
-
 
 {% endblock %}

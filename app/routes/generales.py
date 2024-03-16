@@ -6,6 +6,11 @@ from ..models.georisques import Etablissements, Departements, Polluants
 def accueil():
      return render_template("pages/accueil.html", sous_titre="Accueil")
 
+@app.route("/test/<int:etablissement_id>")
+def etablissement_detail(etablissement_id):
+    etablissement = Etablissements.query.get(etablissement_id)
+    return render_template("pages/etablissement_detail.html", etablissement=etablissement)
+
 
 @app.route("/etablissements")
 @app.route("/etablissements/<int:page>")
@@ -16,11 +21,10 @@ def etablissements(page=1):
 
 @app.route("/etablissements/<string:nom_etablissement>")
 def un_etablissement(nom_etablissement:str):
+    
     return render_template("pages/un_etablissement.html", 
         sous_titre=nom_etablissement, 
         donnees= Etablissements.query.filter(Etablissements.nom == nom_etablissement).first())
-
-
 
 
 @app.route("/departements")
@@ -43,9 +47,10 @@ def departements(page=1):
         
 @app.route("/departements/<string:nom_departement>")
 def un_departement(nom_departement):
+    page=request.args.get('page', 1, type=int)
     departement_x = Departements.query.filter_by(nom=nom_departement).first()
 
-    etablissements_departement = Etablissements.query.filter_by(departement=departement_x.id).order_by(Etablissements.nom).all()
+    etablissements_departement = Etablissements.query.filter_by(departement=departement_x.id).order_by(Etablissements.nom).paginate(page=page, per_page=app.config["DPT_PER_PAGE"])
     return render_template("pages/un_departement.html", sous_titre=nom_departement, donnees=etablissements_departement, nom_departement=nom_departement)
     
 

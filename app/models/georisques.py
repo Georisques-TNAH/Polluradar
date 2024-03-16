@@ -25,7 +25,7 @@ class Etablissements(db.Model):
     
     departement = db.Column(db.Integer, db.ForeignKey("departements.id"))
 
-    etablissements_polluants = db.relationship(
+    polluant = db.relationship(
         'Polluants',
         secondary=etablissements_polluants,
         backref="etablissements",

@@ -1,0 +1,33 @@
+{% extends "partials/conteneur.html" %}
+
+{% block title %}
+    Résultats de la recherche d'établissements
+{% endblock %}
+
+{% block content %}
+    <h1>Résultats de la recherche d'établissements</h1>
+    
+    {% if donnees %}
+        <p>Nombre total d'établissements trouvés : {{ donnees.total }}</p>
+        <ul>
+            {% for etablissement in donnees.items %}
+                <li>
+                    <strong>Nom :</strong> {{ etablissement.nom }}<br>
+                    <strong>Adresse :</strong> {{ etablissement.adresse }}<br>
+                    <strong>Code postal :</strong> {{ etablissement.code_postal }}<br>
+                    <strong>Commune :</strong> {{ etablissement.commune }}<br>
+                </li>
+            {% endfor %}
+        </ul>
+        
+        {% if donnees.has_prev %}
+            <a href="{{ url_for('recherche', page=donnees.prev_num) }}">Page précédente</a>
+        {% endif %}
+        
+        {% if donnees.has_next %}
+            <a href="{{ url_for('recherche', page=donnees.next_num) }}">Page suivante</a>
+        {% endif %}
+    {% else %}
+        <p>Aucun établissement trouvé.</p>
+    {% endif %}
+{% endblock %}

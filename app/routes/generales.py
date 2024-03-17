@@ -1,7 +1,8 @@
 from ..app import app, db
-from flask import Flask, render_template, request, abort
+from flask import Flask, render_template, request, abort, flash
 from sqlalchemy import or_
 from ..models.georisques import Etablissements, Departements, Polluants
+from ..models.formulaires import Recherche
 
 
 @app.route("/")
@@ -104,6 +105,64 @@ def recherche_rapide(page=1):
     except Exception as e:
         print(e)
         abort(500)
+
+
+@app.route("/recherche", methods=['GET', 'POST'])
+@app.route("/recherche/<int:page>", methods=['GET', 'POST'])
+def recherche(page=1):
+    form = Recherche() 
+
+    # initialisation des données de retour dans le cas où il n'y ait pas de requête
+    donnees = []
+
+    try:
+        if form.validate_on_submit():
+            # récupération des éventuels arguments de l'URL qui seraient le signe de l'envoi d'un formulaire
+            nom_commune = request.form.get("nom_commune", None)
+            code_postal = request.form.get("code_postal", None)
+
+            # si l'un des champs de recherche a une valeur, alors cela veut dire que le formulaire a été rempli et qu'il faut lancer une recherche 
+            # dans les données
+            if nom_commune or code_postal:
+                # initialisation de la recherche
+                query = Etablissements.query
+
+                if nom_commune:
+                    query = query.filter(Etablissements.commune.ilike("%"+nom_commune.lower()+"%"))
+                
+                if code_postal:
+                    query = query.filter(Etablissements.code_postal == code_postal)
+                
+                donnees = query.paginate(page=page, per_page=app.config["ETABLISSEMENTS_PER_PAGE"])
+
+                # renvoi des filtres de recherche pour préremplissage du formulaire
+                form.nom_commune.data = nom_commune
+                form.code_postal.data = code_postal
+            flash("La recherche a été effectuée avec succès", "info")
+    except Exception as e:
+        flash("La recherche a rencontré une erreur "+ str(e), "info")
+
+    return render_template("pages/resultats_recherche.html", 
+            sous_titre= "Recherche" , 
+            donnees=donnees,
+            form=form)
+
+
+@app.route("/autocompletion")
+@app.route("/autocompletion/<string:chaine>")
+def autocompletion(chaine=None):
+    try: 
+        query = Etablissements.query
+
+        if chaine:
+            query = query.filter(Etablissements.commune.ilike("%"+chaine.lower()+"%"))
+        
+        donnees = [r.commune for r in query.all()]
+    except Exception as e:
+        print(e)
+        donnees = []
+    return donnees
+
 
 
 

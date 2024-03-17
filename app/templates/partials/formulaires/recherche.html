@@ -1,0 +1,18 @@
+<form action="{{url_for('recherche')}}" method="post" name="recherche">
+    {{ form.hidden_tag() }}
+
+    <div class="form-group">
+        <label for="nom_commune">Nom de la commune recherchée </label>
+        {{ form.nom_commune(class_="form-control", placeholder_="Commune") }}
+        <small id="nom_commune" class="form-text text-muted">Entrer tout ou partie du nom d'une
+            commune</small>
+    </div>
+
+    <div class="form-group">
+        <label for="code_postal">Code postal</label>
+        {{ form.code_postal(class_="form-control") }}
+        <small id="code_postal" class="form-text text-muted">Sélectionner le code postal de la commune recherchée</small>
+    </div>
+
+    <p><input type="submit" value="Rechercher"></p>
+</form>

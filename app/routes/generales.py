@@ -1,6 +1,8 @@
 from ..app import app, db
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, abort
+from sqlalchemy import or_
 from ..models.georisques import Etablissements, Departements, Polluants
+
 
 @app.route("/")
 def accueil():
@@ -79,5 +81,29 @@ def un_polluant(nom_polluant):
     return render_template("pages/un_polluant.html", sous_titre=nom_polluant, donnees=etablissements_polluant)
     
 
-    #pas sûre du polluant 1 dans Etablissements.polluant.contains(polluant)).
+@app.route("/recherche_rapide")
+@app.route("/recherche_rapide/<int:page>")
+def recherche_rapide(page=1):
+    commune_recherchee = request.args.get("commune", None)
+    try: 
+        if commune_recherchee:
+            resultats = Etablissements.query.filter(
+                Etablissements.commune.ilike("%"+commune_recherchee+"%")
+            ).paginate(page=page, per_page=app.config["ETABLISSEMENT_PER_PAGE"])
+        else:
+            resultats = None
+            
+        # Vérifier si commune_recherchee est None avant de la concaténer avec une chaîne
+        sous_titre = "Recherche | Commune : " + (commune_recherchee if commune_recherchee else "")
+        
+        return render_template("pages/resultats_recherche_etablissements.html", 
+                sous_titre=sous_titre, 
+                donnees=resultats,
+                requete=commune_recherchee)
+    
+    except Exception as e:
+        print(e)
+        abort(500)
+
+
 

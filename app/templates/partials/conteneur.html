@@ -39,7 +39,7 @@
       border: 1px solid #d4d4d4;
       border-bottom: none;
       border-top: none;
-      z-index: 99;*/
+      z-index: 99;
       /*position the autocomplete items to be the same width as the container:*/
       top: 100%;
       left: 0;
@@ -51,7 +51,7 @@
       cursor: pointer;
       background-color: #fff; 
       border-bottom: 1px solid #d4d4d4; 
-    }*/
+    }
     
     /*when hovering an item:*/
     .autocomplete-items div:hover {
@@ -63,7 +63,7 @@
       background-color: green !important; 
       color: #ffffff; 
     }
-    </style>
+  </style>
 
 </head>
 
@@ -90,7 +90,12 @@
           <li class="nav-item active">
             <a class="nav-link" href="{{ url_for('polluants') }}">Polluants</a>
           </li>
-
+      </ul>
+      <form class="form-inline my-2 my-lg-0" action="{{ url_for('recherche_rapide') }}" method="get">
+        <input class="form-control mr-sm-2" type="search" placeholder="Recherche par commune" aria-label="Search" name="chaine">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Rechercher</button>
+      </form>
+    </div>
   </nav>
 
   <div class="container">

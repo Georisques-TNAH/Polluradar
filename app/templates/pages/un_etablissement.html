@@ -118,10 +118,10 @@ data-parent="#accordion">
                 <div class="card-body">
 
                     <p><b>Polluant(s)</b>:
-                        {% if donnees.polluants %}
+                        {% if donnees.polluant %}
                     <ul>
-                        {%for polluant in donnees.polluants%}
-                        <li><a href="{{url_for('un_polluant', nom_polluant=polluant.nom)}}">{{polluant.nom}}</a> ({{polluant.id}})</li>
+                        {%for polluant in donnees.polluant%}
+                        <li><a href="{{url_for('un_polluant', nom_polluant=polluant.nom)}}">{{polluant.nom}}</a></li>
                         {%endfor%}
                     </ul>
                     {%endif%}

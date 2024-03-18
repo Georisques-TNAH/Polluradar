@@ -75,12 +75,14 @@ def polluants(page=1):
         donnees=Polluants.query.paginate(page=page, per_page=app.config["POLLUANT_PER_PAGE"]),
         donnees_generales=etablissement_par_polluant)
 
+
 @app.route("/polluants/<string:nom_polluant>")
 def un_polluant(nom_polluant):
+    page = request.args.get('page', 1, type=int)
     polluant_x = Polluants.query.filter_by(nom=nom_polluant).first()
-    etablissements_polluant = Etablissements.query.filter(Etablissements.polluant.contains(polluant_x)).order_by(Etablissements.nom).all()
+    etablissements_polluant = Etablissements.query.filter(Etablissements.polluant.contains(polluant_x)).order_by(Etablissements.nom).paginate(page=page, per_page=app.config["POLLUANT_PER_PAGE"])
     return render_template("pages/un_polluant.html", sous_titre=nom_polluant, donnees=etablissements_polluant)
-    
+
 
 @app.route("/recherche_rapide")
 @app.route("/recherche_rapide/<int:page>")

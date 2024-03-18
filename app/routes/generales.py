@@ -12,7 +12,7 @@ def accueil():
 @app.route("/test/<int:etablissement_id>")
 def etablissement_detail(etablissement_id):
     etablissement = Etablissements.query.get(etablissement_id)
-    return render_template("pages/etablissement_detail.html", etablissement=etablissement)
+    return render_template("pages/test.html", etablissement=etablissement)
 
 
 @app.route("/etablissements")
@@ -20,7 +20,7 @@ def etablissement_detail(etablissement_id):
 def etablissements(page=1):
     return render_template("pages/etablissements.html",
         sous_titre="Etablissements", 
-        etablissements= Etablissements.query.order_by(Etablissements.nom).paginate(page=page, per_page=app.config["ETABLISSEMENT_PER_PAGE"]))
+        etablissements= Etablissements.query.order_by(Etablissements.nom).paginate(page=page, per_page=app.config["ETABLISSEMENTS_PER_PAGE"]))
 
 @app.route("/etablissements/<string:nom_etablissement>")
 def un_etablissement(nom_etablissement:str):
@@ -92,7 +92,7 @@ def recherche_rapide(page=1):
         if commune_recherchee:
             resultats = Etablissements.query.filter(
                 Etablissements.commune.ilike("%"+commune_recherchee+"%")
-            ).paginate(page=page, per_page=app.config["ETABLISSEMENT_PER_PAGE"])
+            ).paginate(page=page, per_page=app.config["ETABLISSEMENTS_PER_PAGE"])
         else:
             resultats = None
             

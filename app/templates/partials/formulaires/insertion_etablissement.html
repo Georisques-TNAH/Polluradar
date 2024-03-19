@@ -28,7 +28,7 @@
     <div class="form-group">
         <label for="code_postal">Code Postal</label>
         {{ form.code_postal(class_="form-control", placeholder="Code Postal") }}
-        <small id="code_postal" class="form-text text-muted">Entrez le code postal</small>
+        <small id="code_postal" class="form-text text-muted">Sélectionnez le code postal</small>
     </div>
 
     <div class="form-group">
@@ -77,6 +77,12 @@
         <label for="commune">Commune</label>
         {{ form.commune(class_="form-control", placeholder="Commune") }}
         <small id="commune" class="form-text text-muted">Entrez le nom de la commune</small>
+    </div>
+
+    <div class="form-group">
+        <label for="departement">Département</label>
+        {{ form.departement(class_="form-control", placeholder="Département") }}
+        <small id="departement" class="form-text text-muted">Entrez le numéro du département</small>
     </div>
 
     <p><input type="submit" value="Insérer"></p>

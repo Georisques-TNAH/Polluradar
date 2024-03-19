@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for, flash
+from flask import render_template, request, redirect, url_for, flash, logging
 from ..app import app, db
 from ..models.georisques import Etablissements
 from ..models.formulaires import InsertionEtablissement
@@ -11,6 +11,7 @@ def insertion_etablissement():
 
     if form.validate_on_submit():
         # Récupérer les données du formulaire
+        print('VALIDATE')
         nom = form.nom.data
         siret = form.siret.data
         siren = form.siren.data
@@ -24,9 +25,10 @@ def insertion_etablissement():
         latitude = form.latitude.data
         longitude = form.longitude.data
         commune = form.commune.data
+        departement=form.departement.data
 
         # Vérifier si les champs obligatoires sont remplis
-        if nom and adresse and code_postal and secteur_na38 :
+        if nom and adresse and code_postal and secteur_na38 and siret and siren and code_ape and milieu_pollué and produitLabel and dateCreation and latitude and longitude and commune and departement :
             try:
                 # Créer un nouvel établissement
                 nouvel_etablissement = Etablissements(
@@ -43,6 +45,7 @@ def insertion_etablissement():
                     latitude=latitude,
                     longitude=longitude,
                     commune=commune,
+                    departement=departement
                 )
 
                 # Ajouter et enregistrer le nouvel établissement dans la base de données
@@ -59,6 +62,7 @@ def insertion_etablissement():
                 flash("Une erreur s'est produite lors de l'insertion de l'établissement : {}".format(str(e)), 'error')
         else:
             flash("Veuillez remplir tous les champs obligatoires.", 'error')
+            return redirect(url_for('accueil'))
 
     return render_template("pages/insertion_etablissement.html", 
                            sous_titre="Insertion établissement", 

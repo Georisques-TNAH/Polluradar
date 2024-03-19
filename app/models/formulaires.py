@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SelectField, SubmitField, FloatField
+from wtforms import StringField, SelectField, SubmitField, FloatField, IntegerField
 from ..models.georisques import Etablissements
 
 class Recherche(FlaskForm):
@@ -21,6 +21,7 @@ class InsertionEtablissement(FlaskForm):
     latitude = FloatField('Latitude', validators=[])
     longitude = FloatField('Longitude', validators=[])
     commune = StringField('Commune', validators=[])
+    departement = IntegerField('Departement', validators=[])
     submit = SubmitField('Insérer', validators=[])
 
     def __init__(self, *args, **kwargs):

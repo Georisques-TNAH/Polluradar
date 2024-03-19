@@ -6,19 +6,19 @@ from ..models.georisques import Etablissements
 @app.route("/suppressions/etablissement", methods=['GET', 'POST'])
 def suppression_etablissement():
     form = SuppressionEtablissement()
-    form.nom.choices = [('','')] + [(etablissement.id, etablissement.nom) for etablissement in Etablissements.query.all()]
+    form.nom.choices = [('','')] + [(etablissement.nom, etablissement.code_postal) for etablissement in Etablissements.query.all()]
 
-    def delete_etablissement(id_etablissement):
-        etablissement = Etablissements.query.get(id_etablissement)
+    def delete_etablissement(nom):
+        etablissement = Etablissements.query.get(nom)
         if etablissement:
             db.session.delete(etablissement)
             db.session.commit()
 
     try:
         if form.validate_on_submit():
-            id_etablissement = request.form.get("nom_etablissement", None)
-            if id_etablissement:
-                delete_etablissement(id_etablissement)
+            nom = request.form.get("nom", None)
+            if nom:
+                delete_etablissement(nom)
                 flash("La suppression de l'établissement s'est correctement déroulée", 'info')
             else:
                 flash("Il n'y a aucun établissement spécifié", "error")

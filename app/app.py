@@ -19,4 +19,4 @@ csrf = CSRFProtect(app)
 # Création de l'objet SQLAlchemy
 db = SQLAlchemy(app)
 
-from .routes import generales, erreur, insertion
+from .routes import generales, erreur, insertion, suppression

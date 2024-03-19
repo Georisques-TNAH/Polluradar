@@ -109,22 +109,20 @@
                 </h5>
             </div>
 
-            <div
-id="collapsepolluants"
-class="collapse "
-aria-labelledby="headingpolluants"
-data-parent="#accordion">
+            <div id="collapsepolluants" class="collapse " aria-labelledby="headingpolluants" data-parent="#accordion">
 
                 <div class="card-body">
 
                     <p><b>Polluant(s)</b>:
-                        {% if donnees.polluant %}
+                    {% if donnees.polluant %}
                     <ul>
                         {%for polluant in donnees.polluant%}
                         <li><a href="{{url_for('un_polluant', nom_polluant=polluant.nom)}}">{{polluant.nom}}</a></li>
                         {%endfor%}
-                    </ul>
-                    {%endif%}
+                    </ul> 
+                    {% else %}
+                        <p>polluants non renseignés</p>
+                    {% endif %}
                     </p>
                 </div>
             </div>

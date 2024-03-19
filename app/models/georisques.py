@@ -15,7 +15,7 @@ class Etablissements(db.Model):
     adresse = db.Column(db.String, nullable=False)
     code_postal = db.Column(db.String(5), nullable=False)
     code_ape = db.Column(db.String(5), nullable=False)
-    milieu_pollué = db.Column(db.String(3), nullable=True)
+    milieu_pollué = db.Column(db.String(3), nullable=True)  #accent /!\
     secteur_na38 = db.Column(db.String, nullable=False)
     produitLabel = db.Column(db.String, nullable=True)
     dateCreation = db.Column(db.Integer, nullable=True)
@@ -34,6 +34,10 @@ class Etablissements(db.Model):
 
     def __repr__(self):
         return '<Etablissements %r>' % self.nom
+    
+    @staticmethod
+    def get_unique_code_postals():
+        return db.session.query(Etablissements.code_postal).distinct().all()
     
 class Departements(db.Model):
     __tablename__ = "departements"

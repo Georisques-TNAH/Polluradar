@@ -93,11 +93,19 @@
             <li class="nav-item active">
               <a class="nav-link" href="{{ url_for('recherche') }}">Recherche</a>
             </li>
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                Modifications
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="{{ url_for('insertion_etablissement') }}">Insertion</a>
+                
+              </div>
+            </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0" action="{{ url_for('recherche_rapide') }}" method="get">
-          <input class="form-control mr-sm-2" type="search" placeholder="Recherche par commune" aria-label="Search" name="chaine">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Rechercher</button>
-        </form>
+        {% include "partials/formulaires/recherche_rapide.html" %}
       </div>
     </nav>
 
@@ -149,7 +157,8 @@
             a.appendChild(b);
           }
         }
-      });
+      })
+    };
     </script>
 
   </body>

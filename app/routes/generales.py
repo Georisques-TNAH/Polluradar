@@ -44,7 +44,7 @@ def departements(page=1):
 
     return render_template("pages/departements.html",
         sous_titre="Départements",
-        donnees=Departements.query.paginate(page=page, per_page=app.config["DPT_PER_PAGE"]),
+        donnees=Departements.query.order_by(Departements.nom).paginate(page=page, per_page=app.config["DPT_PER_PAGE"]),
         donnees_generales=etablissements_par_departement, page=page)
 
         

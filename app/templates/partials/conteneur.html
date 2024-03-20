@@ -1,8 +1,8 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
 
   <head>
-    <title>Factbook | {{sous_titre}}</title>
+    <title>PolluRadar | {{sous_titre}}</title>
     {% include "partials/css.html" %}
     {% include "partials/metadata.html" %}
     {% include "partials/js.html" %}
@@ -92,6 +92,9 @@
             </li>
             <li class="nav-item active">
               <a class="nav-link" href="{{ url_for('recherche') }}">Recherche</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="{{ url_for('carte') }}">Carte</a>
             </li>
 
             <li class="nav-item dropdown">

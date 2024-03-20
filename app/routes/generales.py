@@ -167,7 +167,7 @@ def autocompletion(chaine=None):
 
 
 @app.route('/carte')
-def map():
+def carte():
     # Création d'une liste pour stocker les données des marqueurs GeoJSON
     donnees = []
 

@@ -1,7 +1,7 @@
 from ..app import app, db
 from flask import render_template, request, flash
 from ..models.formulaires import SuppressionEtablissement
-from ..models.georisques import Etablissements
+from ..models.georisques import Etablissements, etablissements_polluants
 
 @app.route("/suppressions/etablissement", methods=['GET', 'POST'])
 def suppression_etablissement():
@@ -9,8 +9,12 @@ def suppression_etablissement():
     form.nom.choices = [('','')] + [(etablissement.nom, etablissement.code_postal) for etablissement in Etablissements.query.all()]
 
     def delete_etablissement(nom):
-        etablissement = Etablissements.query.get(nom)
+        etablissement = Etablissements.query.filter_by(nom=nom).first()
         if etablissement:
+            # Supprimer les entrées associées dans la table de liaison
+            delete_statement = etablissements_polluants.delete().where(etablissements_polluants.c.etablissement == etablissement.id)
+            db.session.execute(delete_statement)
+            # Supprimer l'établissement lui-même
             db.session.delete(etablissement)
             db.session.commit()
 

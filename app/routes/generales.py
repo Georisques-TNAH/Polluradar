@@ -1,9 +1,9 @@
 from ..app import app, db
-from flask import Flask, render_template, request, abort, flash
+from flask import Flask, render_template, request, abort, flash, jsonify
 from sqlalchemy import or_
+import geojson
 from ..models.georisques import Etablissements, Departements, Polluants
 from ..models.formulaires import Recherche
-
 
 @app.route("/")
 def accueil():
@@ -166,5 +166,64 @@ def autocompletion(chaine=None):
     return donnees
 
 
+@app.route('/carte')
+def map():
+    # Création d'une liste pour stocker les données des marqueurs GeoJSON
+    donnees = []
+
+    # Appel des données contenues dans Etablissements
+    for etablissement in Etablissements.query.all():
+        # Vérifier si les coordonnées de latitude et de longitude sont disponibles
+        if etablissement.latitude != "" and etablissement.longitude != "":
+            # Création des propriétés de l'établissement
+            champs = {
+                "nom": etablissement.nom if etablissement.nom is not None else "Nom_par_défaut",
+                "latitude": etablissement.latitude,
+                "longitude": etablissement.longitude,
+            }
+
+            # Création du point GeoJSON
+            localisation = geojson.Point((etablissement.latitude, etablissement.longitude))
+
+            # Création du marqueur du point GeoJSON
+            marqueur = geojson.Feature(
+                geometry=localisation,
+                properties=champs
+            )
+
+            # Ajout du marqueur à la liste des marqueurs créés
+            donnees.append(marqueur)
+
+    # Création de la collection de points GeoJSON
+    feature_collection = geojson.FeatureCollection(donnees)
+    
+    return render_template('pages/carte.html', etablissements=feature_collection)
+
+# BAAAAAAAAAAAAARRRRRRRRRRRRRRRRRRRRRRRIEEEEEEEEEEEEEEEEEEEEEEEEEREEEEEEEEEEEEEEEEEEEEEEEE
 
 
+
+
+# Convertir les établissements en GeoJSON
+
+
+    # Liste de sites géolocalisés
+    # sites = [
+    #     {"name": "Site 1", "location": [48.8566, 2.3522]},  # Exemple de coordonnées (Paris)
+    #     {"name": "Site 2", "location": [51.5074, -0.1278]},  # Exemple de coordonnées (Londres)
+    #     # Ajoutez d'autres sites avec leurs coordonnées
+    # ]
+    
+    # return render_template('pages/carte.html', sites=sites)
+
+
+    # code_postal = request.form.get("code_postal", None)
+
+    # sites = {}
+
+    # for etablissement in Etablissements.query.all():
+    #     name = Departements.query.filter_by(id=etablissement.departement).first()
+    #     if departement.nom in sites:
+    #         sites[departement.nom].append(etablissement)
+    #     else:
+    #         sites[departement.nom] = [etablissement]

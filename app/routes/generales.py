@@ -87,22 +87,23 @@ def un_polluant(nom_polluant):
 @app.route("/recherche_rapide")
 @app.route("/recherche_rapide/<int:page>")
 def recherche_rapide(page=1):
-    commune_recherchee = request.args.get("commune", None)
+    chaine = request.args.get("chaine", None)
     try: 
-        if commune_recherchee:
+        if chaine:
             resultats = Etablissements.query.filter(
-                Etablissements.commune.ilike("%"+commune_recherchee+"%")
-            ).paginate(page=page, per_page=app.config["ETABLISSEMENTS_PER_PAGE"])
+                Etablissements.commune.ilike("%"+chaine+"%")
+            ).order_by(Etablissements.nom).paginate(page=page, per_page=app.config["ETABLISSEMENTS_PER_PAGE"])
+            
         else:
             resultats = None
             
-        # Vérifier si commune_recherchee est None avant de la concaténer avec une chaîne
-        sous_titre = "Recherche | Commune : " + (commune_recherchee if commune_recherchee else "")
+        # Vérifier si chaine est None avant de la concaténer avec une chaîne
+        sous_titre = "Recherche | Commune : " + (chaine if chaine else "")
         
         return render_template("pages/resultats_recherche_etablissements.html", 
                 sous_titre=sous_titre, 
                 donnees=resultats,
-                requete=commune_recherchee)
+                requete=chaine)
     
     except Exception as e:
         print(e)

@@ -4,7 +4,7 @@ from ..models.georisques import Etablissements
 
 class Recherche(FlaskForm):
     nom_commune = StringField("nom_commune", validators=[]) 
-    code_postal = SelectField('code_postal', choices=[])
+    code_postal = StringField('code_postal', validators=[])
 
 class InsertionEtablissement(FlaskForm):
     nom = StringField('Nom de l\'établissement', validators=[])

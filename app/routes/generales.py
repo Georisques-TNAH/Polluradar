@@ -109,36 +109,32 @@ def recherche_rapide(page=1):
         print(e)
         abort(500)
 
-
 @app.route("/recherche", methods=['GET', 'POST'])
-@app.route("/recherche/<int:page>", methods=['GET', 'POST'])
-def recherche(page=1):
+def recherche():
     form = Recherche() 
 
-    # initialisation des données de retour dans le cas où il n'y ait pas de requête
+    requete = None
+
     donnees = []
 
     try:
         if form.validate_on_submit():
-            # récupération des éventuels arguments de l'URL qui seraient le signe de l'envoi d'un formulaire
             nom_commune = request.form.get("nom_commune", None)
             code_postal = request.form.get("code_postal", None)
 
-            # si l'un des champs de recherche a une valeur, alors cela veut dire que le formulaire a été rempli et qu'il faut lancer une recherche 
-            # dans les données
             if nom_commune or code_postal:
-                # initialisation de la recherche
                 query = Etablissements.query
 
                 if nom_commune:
                     query = query.filter(Etablissements.commune.ilike("%"+nom_commune.lower()+"%"))
-                
-                if code_postal:
-                    query = query.filter(Etablissements.code_postal == code_postal)
-                
-                donnees = query.paginate(page=page, per_page=app.config["ETABLISSEMENTS_PER_PAGE"])
+                    requete = nom_commune
 
-                # renvoi des filtres de recherche pour préremplissage du formulaire
+                if code_postal:
+                    query = query.filter(Etablissements.code_postal.ilike("%"+code_postal+"%"))
+                    requete=code_postal
+                
+                donnees = query.order_by(Etablissements.commune).all()
+                
                 form.nom_commune.data = nom_commune
                 form.code_postal.data = code_postal
             flash("La recherche a été effectuée avec succès", "info")
@@ -148,7 +144,8 @@ def recherche(page=1):
     return render_template("pages/resultats_recherche.html", 
             sous_titre= "Recherche" , 
             donnees=donnees,
-            form=form)
+            form=form,
+            requete=requete)
 
 
 @app.route("/autocompletion")

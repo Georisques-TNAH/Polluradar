@@ -9,6 +9,7 @@
     
     {% if donnees %}
         <p>Nombre total d'établissements trouvés : {{ donnees.total }}</p>
+        <div style="margin-bottom: 50px;">
         <div class="row">
             <div class="col-4">
                 <div class="list-group" id="list-tab" role="tablist">
@@ -30,7 +31,7 @@
                     {% endfor %}
                 </div>
             </div>
-        </div>
+        
         
         {% if donnees.has_prev %}
             <a href="{{ url_for('recherche_rapide', page=donnees.prev_num, chaine=requete) }}">Page précédente</a>
@@ -39,7 +40,11 @@
         {% if donnees.has_next %}
             <a href="{{ url_for('recherche_rapide', page=donnees.next_num, chaine=requete) }}">Page suivante</a>
         {% endif %}
+        
+    </div>
     {% else %}
         <p>Aucun établissement trouvé pour la commune "{{ requete }}".</p>
     {% endif %}
+    
+</div>
 {% endblock %}

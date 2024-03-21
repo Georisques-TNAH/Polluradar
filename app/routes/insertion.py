@@ -12,6 +12,7 @@ def insertion_etablissement():
     if form.validate_on_submit():
         # Récupérer les données du formulaire
         print('VALIDATE')
+        id = form.id.data
         nom = form.nom.data
         siret = form.siret.data
         siren = form.siren.data
@@ -28,10 +29,11 @@ def insertion_etablissement():
         departement=form.departement.data
 
         # Vérifier si les champs obligatoires sont remplis
-        if nom and adresse and code_postal and secteur_na38 and siret and siren and code_ape and milieu_pollué and produitLabel and dateCreation and latitude and longitude and commune and departement :
+        if nom and id and departement :
             try:
                 # Créer un nouvel établissement
                 nouvel_etablissement = Etablissements(
+                    id=id,
                     nom=nom,
                     siret=siret,
                     siren=siren,

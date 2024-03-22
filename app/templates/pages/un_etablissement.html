@@ -4,7 +4,7 @@
 
 <div class="container">
     <div class="row">
-        <h1>Ensemble des données sur l'établissement {{sous_titre}}</h1>
+        <h1>Ensemble des données sur l'établissement "{{sous_titre}}"</h1>
         <br>
     </div>
 
@@ -112,18 +112,18 @@
             <div id="collapsepolluants" class="collapse " aria-labelledby="headingpolluants" data-parent="#accordion">
 
                 <div class="card-body">
-
                     <p><b>Polluant(s)</b>:
-                    {% if donnees.polluant %}
+                        {% set polluants = donnees.polluant.all() %}
+                        {% if polluants %}
                     <ul>
-                        {%for polluant in donnees.polluant%}
-                        <li><a href="{{url_for('un_polluant', nom_polluant=polluant.nom)}}">{{polluant.nom}}</a></li>
-                        {%endfor%}
+                            {% for polluant in polluants %}
+                                <li><a class="css_links" href="{{url_for('un_polluant', nom_polluant=polluant.nom)}}">{{polluant.nom}}</a></li>
+                            {% endfor %}
+                        {% else %}
+                            Polluants non renseignés par l'établissement.
+                        {% endif %}
                     </ul> 
-                    {% else %}
-                        polluants non renseignés
-                    {% endif %}
-                    </p>
+                </p>
                 </div>
             </div>
         </div>

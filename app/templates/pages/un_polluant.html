@@ -19,7 +19,7 @@
                 {% for etablissement in donnees.items %}
                 <div class="tab-pane fade {% if loop.first %}show active{% endif %}" id="list-{{etablissement.id}}" role="tabpanel"
                     aria-labelledby="list-{{etablissement.id}}-list">
-                    <a href="{{ url_for('un_etablissement', nom_etablissement=etablissement.nom) }}"> Voir les données de {{etablissement.nom}}</a>
+                    <a class="css_links" href="{{ url_for('un_etablissement', nom_etablissement=etablissement.nom) }}"> Voir les données de {{etablissement.nom}}</a>
                     <br>
                     {{etablissement.commune}}
                 </div>
@@ -43,7 +43,7 @@
             {% for page_num in donnees.iter_pages() %}
             {% if page_num %}
             <li class="page-item {% if page_num == donnees.page %}active{% endif %}">
-                <a class="page-link" href="{{ url_for('un_polluant', nom_polluant=sous_titre, page=page_num) }}">{{ page_num }}</a>
+                <a class="btn" href="{{ url_for('un_polluant', nom_polluant=sous_titre, page=page_num) }}">{{ page_num }}</a>
             </li>
             {% else %}
             <li class="page-item disabled"><span class="page-link">...</span></li>

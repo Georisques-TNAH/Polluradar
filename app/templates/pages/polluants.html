@@ -41,15 +41,22 @@
                 {% if (donnees.items).index(polluant) == 0 %}
                 <div class="tab-pane fade show active" id="list-{{polluant.id}}" role="tabpanel"
                     aria-labelledby="list-{{polluant.id}}-list">
-                    <a href="{{ url_for('un_polluant', nom_polluant=polluant.nom) }}"> Voir les {{donnees_generales[polluant.nom] | length}} établissement rejetant {{polluant.nom}}</a>
+                    <ul>
+                    <li><a class="css_links" href="{{polluant.fiche_inrs}}">Télécharger la fiche INRS du {{polluant.nom}}</a></li>
+                    <br>
+                    <li><a class="css_links" href="{{ url_for('un_polluant', nom_polluant=polluant.nom) }}"> Voir les {{donnees_generales[polluant.nom] | length}} établissement rejetant du {{polluant.nom}}</a></li>
+                </ul>
                 </div>
                 {% else %}
                 <div class="tab-pane fade " id="list-{{polluant.id}}" role="tabpanel"
                     aria-labelledby="list-{{polluant.id}}-list">
-                    <a href="{{ url_for('un_polluant', nom_polluant=polluant.nom) }}"> Voir les {{donnees_generales[polluant.nom] | length}} établissement rejetant {{polluant.nom}}</a>
+                    <ul>
+                    <li><a class="css_links" href="{{polluant.fiche_inrs}}">Télécharger la fiche INRS du {{polluant.nom}}</a></li>
+                    <br>
+                    <li><a class="css_links" href="{{ url_for('un_polluant', nom_polluant=polluant.nom) }}"> Voir les {{donnees_generales[polluant.nom] | length}} établissement rejetant du {{polluant.nom}}</a></li>
+                </ul>
                 </div>
                 {% endif %}
-
                 {% endfor %}
             </div>
         </div>

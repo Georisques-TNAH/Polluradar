@@ -2,13 +2,13 @@
     {{ form.hidden_tag() }}
 
     <div class="form-group">
-        <label for="nom">Nom de l'établissement</label>
+        <label for="nom">Nom de l'établissement <small><i>(obligatoire)</i></small></label>
         {{ form.nom(class_="form-control", placeholder="Nom de l'établissement") }}
         <small id="nom" class="form-text text-muted">Entrez le nom de l'établissement</small>
     </div>    
     
     <div class="form-group">
-        <label for="siret">Identifiant</label>
+        <label for="siret">Identifiant <small><i>(obligatoire)</i></small></label>
         {{ form.id(class_="form-control", placeholder="Identifiant") }}
         <small id="siret" class="form-text text-muted">Entrez l'identifiant de l'établissement</small>
     </div>
@@ -86,7 +86,7 @@
     </div>
 
     <div class="form-group">
-        <label for="departement">Département</label>
+        <label for="departement">Département <small><i>(obligatoire)</i></small></label>
         {{ form.departement(class_="form-control", placeholder="Département") }}
         <small id="departement" class="form-text text-muted">Entrez le numéro du département</small>
     </div>

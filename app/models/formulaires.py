@@ -29,12 +29,6 @@ class InsertionEtablissement(FlaskForm):
 
 class SuppressionEtablissement(FlaskForm):        
     nom = StringField('Nom de l\'établissement', validators=[])
-    code_postal = SelectField('Code Postal', choices=[])
+    code_postal = IntegerField('Code Postal', validators=[])
 
-    def __init__(self, *args, **kwargs):
-        super(SuppressionEtablissement, self).__init__(*args, **kwargs)
-        self.code_postal.choices = self.get_code_postal_choices()
-
-    def get_code_postal_choices(self):
-        etablissements = Etablissements.query.all()
-        return [(str(etablissement.code_postal), str(etablissement.code_postal)) for etablissement in etablissements]
+    

@@ -35,10 +35,7 @@ class Etablissements(db.Model):
     def __repr__(self):
         return '<Etablissements %r>' % self.nom
     
-    @staticmethod
-    def get_unique_code_postals():
-        return db.session.query(Etablissements.code_postal).distinct().all()
-    
+   
 class Departements(db.Model):
     __tablename__ = "departements"
     id = db.Column(db.String, primary_key=True)

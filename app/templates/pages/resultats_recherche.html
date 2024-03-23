@@ -70,7 +70,7 @@
             {% if loop.first %}
             <div class="tab-pane fade show active" id="list-{{etablissement.id}}" role="tabpanel"
                 aria-labelledby="list-{{etablissement.id}}-list">
-                <a href="{{ url_for('un_etablissement', nom_etablissement=etablissement.nom) }}">
+                <a class="css_links" href="{{ url_for('un_etablissement', nom_etablissement=etablissement.nom) }}">
                     Voir les données de {{etablissement.nom | safe}}</a>
                     <br>
                     {{etablissement.adresse | safe}}
@@ -82,7 +82,7 @@
                 {% else %}
                 <div class="tab-pane fade" id="list-{{etablissement.id}}" role="tabpanel"
                     aria-labelledby="list-{{etablissement.id}}-list">
-                    <a href="{{ url_for('un_etablissement', nom_etablissement=etablissement.nom) }}"> Voir les données de {{etablissement.nom | safe}}</a>
+                    <a class="css_links" href="{{ url_for('un_etablissement', nom_etablissement=etablissement.nom) }}"> Voir les données de {{etablissement.nom | safe}}</a>
                     <br>
                        {{etablissement.adresse | safe}}
                     <br>

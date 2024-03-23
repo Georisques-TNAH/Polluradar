@@ -19,7 +19,7 @@
                 {% for etablissement in donnees.items %}
                 <div class="tab-pane fade {% if loop.first %}show active{% endif %}" id="list-{{etablissement.id}}" role="tabpanel"
                     aria-labelledby="list-{{etablissement.id}}-list">
-                    <a href="{{ url_for('un_etablissement', nom_etablissement=etablissement.nom) }}"> Voir les données de {{etablissement.nom}}</a>
+                    <a class="css_links" href="{{ url_for('un_etablissement', nom_etablissement=etablissement.nom) }}"> Voir les données de {{etablissement.nom}}</a>
                     <br>
                     {{etablissement.nom}}
                 </div>

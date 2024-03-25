@@ -27,7 +27,7 @@ Créer un fichier texte nommé `.env` au même niveau que le dossier `env` préc
 Coller les lignes suivantes dans le `.env` en les adaptant : 
 
     DEBUG=True
-    SQLALCHEMY_DATABASE_URI=[URI DE LA BASE DE DONNÉES SQLITE]
+    SQLALCHEMY_DATABASE_URI=[URI DE LA BASE DE DONNÉES SQLITE SITUÉ DANS LE DOSSIER APP/DATA]
     POLLUANT_PER_PAGE=10
     ETABLISSEMENT_PER_PAGE=10
     DPT_PER_PAGE=10

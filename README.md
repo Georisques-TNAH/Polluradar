@@ -23,8 +23,8 @@ Entrez la commande suivante dans votre terminal :
     virtualenv env -p python3
 
 ### Etape 4 : Saisir les variables d'environnement 
-Créer un fichier texte nommé « .env » au même niveau que le dossier « env » précédemment créé. 
-Coller les lignes suivantes dans le « .env » en les adaptant : 
+Créer un fichier texte nommé `.env` au même niveau que le dossier `env` précédemment créé. 
+Coller les lignes suivantes dans le `.env` en les adaptant : 
 
     DEBUG=True
     SQLALCHEMY_DATABASE_URI=[URI DE LA BASE DE DONNÉES SQLITE]
@@ -47,9 +47,9 @@ Puis la commande :
 Entrez la commande suivante dans votre terminal :
 
     python3 run.py
-Ceci lance l'application et un message du type  « * Running on http://127.0.0.1:5000 » s'affiche dans votre teminal. Cliquez sur le lien. 
+Ceci lance l'application et un message du type `* Running on http://127.0.0.1:5000` s'affiche dans votre teminal. Cliquez sur le lien. 
 
 ### Etape 7 : Quitter l'application 
-Afin quitter l'application, effectuer un « ctrl+C » dans le terminal puis entrez « deactivate » dans votre terminal.
+Afin quitter l'application, effectuer un `ctrl+C` dans le terminal puis entrez `deactivate` dans votre terminal. 
 
 Cette application a été réalisée par [Selma Bensidhoum](https://github.com/SelmaKaina), [Mathilde Prades](https://github.com/Mathilde-prds) et [Ronan Vichot](https://github.com/RonanT8).

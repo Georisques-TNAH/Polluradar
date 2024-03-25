@@ -1,0 +1,60 @@
+{% extends "partials/conteneur.html" %}
+
+{% block body %}
+<div id="graphique">
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const ctx = document.getElementById('graphique');
+
+    // Création du graphique
+    var graph = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Pourcentage',
+                data: [],
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    fetch('{{url_for("graph1_donnees")}}')
+    .then((response) => {
+        return response.json();
+    })
+    .then((data) => {
+        // Calcul des secteurs et pourcentages
+        var secteurs = [];
+        var pourcentage = [];
+
+        // Itération sur le retour de l'URL graph1_donnees
+        for (var i = 0; i < data.length; i++) {
+            // Comme en Python, on remplit ici les tableaux
+            secteurs.push(data[i]["secteur"]);
+            pourcentage.push(data[i]["pourcentage"]);
+        }
+        
+        // Mise à jour des données du graphique
+        graph.data.labels = secteurs;
+        graph.data.datasets.forEach((dataset) => {
+            dataset.data = pourcentage;
+        });
+        // Mise à jour du graphique une fois les données calculées et insérées dans le graphique
+        graph.update();
+    });
+</script>
+{% endblock %}

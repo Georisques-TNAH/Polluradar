@@ -1,6 +1,6 @@
 from ..app import app, db
 from flask import Flask, render_template, request, abort, flash, jsonify
-from sqlalchemy import or_
+from sqlalchemy import or_, func, text
 import geojson
 from ..models.georisques import Etablissements, Departements, Polluants
 from ..models.formulaires import Recherche
@@ -245,3 +245,30 @@ def carte():
     #         sites[departement.nom].append(etablissement)
     #     else:
     #         sites[departement.nom] = [etablissement]
+
+@app.route('/datavisualisations')
+def datavisualisations():
+    return render_template('pages/datavisualisations.html')
+
+@app.route("/graph1", methods=['GET', 'POST'])
+def graph1():
+    return render_template("pages/graph1.html")
+
+@app.route("/graph1_donnees", methods=['GET', 'POST'])
+def graph1_donnees():
+    total = db.session.query(func.count(Etablissements.id)).scalar()
+    donnees_brutes = db.session.query(Etablissements.secteur_na38, func.count(Etablissements.id)) \
+        .group_by(Etablissements.secteur_na38) \
+        .order_by(func.count(Etablissements.id).desc()) \
+        .limit(20)
+
+    donnees = []
+
+    for secteur_na38, occurrences in donnees_brutes:
+        pourcentage = (occurrences / total) * 100
+        donnees.append({
+            "secteur": secteur_na38,
+            "pourcentage": pourcentage
+        })
+
+    return jsonify(donnees)

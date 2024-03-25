@@ -1,0 +1,33 @@
+{% extends "partials/conteneur.html" %}
+
+{% block body %}
+<div class="container">
+    <h1>Data visualisations produites avec Tableau</h1>
+</div>
+<div id="dataviz" style="position: absolute; left:-20%; transform: scale(0.9);">
+
+</div>
+
+<div style="font-size: 0.7em;">
+    <p>Pour consulter ce tableau de bord en ligne, cliquez sur ce
+    <a href="https://public.tableau.com/app/profile/ronan.vichot/viz/PolluRadar-Datavisualisationscomplet/Tableaudebord">lien vers Tableau Public</a>.</p>
+</div>
+
+<script type="text/javascript">
+    function initDataviz() {
+        var containerDiv = document.getElementById("dataviz");
+        var url = "https://public.tableau.com/views/PolluRadar-Datavisualisationscomplet/Tableaudebord?:language=fr-FR&:sid=&:display_count=n&:origin=viz_share_link";
+        var options = {
+            width: "1600px",
+            height: "1000px",
+            hideToolbar: true,
+            hideTabs: true,
+            onFirstInteractive: function () {
+                console.log("Les data visualisations ont été chargées avec succès.");
+            }
+        };
+        var viz = new tableau.Viz(containerDiv, url, options);
+    }
+    document.addEventListener("DOMContentLoaded", initDataviz);
+</script>
+{% endblock %}

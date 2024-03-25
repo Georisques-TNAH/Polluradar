@@ -157,29 +157,29 @@ def autocompletion(chaine=None):
         if chaine:
             query = query.filter(Etablissements.commune.ilike("%"+chaine.lower()+"%"))
         
-        donnees = [r.commune for r in query.all()]
+        donnees = [r.commune for r in query.all()] ou jsonify()
     except Exception as e:
         print(e)
         donnees = []
-    return donnees
+    return donnees ou jsonify([])
 """
 
 
 @app.route("/autocompletion/<string:chaine>")
 def autocompletion(chaine=None):
     try: 
-        query = Etablissements.query
+        query_results = Etablissements.query
 
         if chaine:
-            query = query.filter(Etablissements.commune.ilike("%"+chaine.lower()+"%"))
+            query_results = query_results.filter(Etablissements.commune.ilike("%"+chaine+"%"))
         
-        donnees = [r.commune for r in query.all()]
+        donnees = [r.commune for r in query_results.all()]
         
-        return jsonify(donnees)
+        return donnees
     
     except Exception as e:
         print(e)
-        return jsonify([])
+        return []
 
 
 

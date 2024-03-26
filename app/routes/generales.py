@@ -147,23 +147,6 @@ def recherche():
             form=form,
             requete=requete)
 
-"""
-@app.route("/autocompletion")
-@app.route("/autocompletion/<string:chaine>")
-def autocompletion(chaine=None):
-    try: 
-        query = Etablissements.query
-
-        if chaine:
-            query = query.filter(Etablissements.commune.ilike("%"+chaine.lower()+"%"))
-        
-        donnees = [r.commune for r in query.all()] ou jsonify()
-    except Exception as e:
-        print(e)
-        donnees = []
-    return donnees ou jsonify([])
-"""
-
 
 @app.route("/autocompletion/<string:chaine>")
 def autocompletion(chaine=None):

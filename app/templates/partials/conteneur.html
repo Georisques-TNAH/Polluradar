@@ -67,16 +67,16 @@
 </head>
 
 <body>
-  <div class="bg-image" style="height: 450px; width:100%;overflow:hidden;margin-top: -200px;background-image: url('https://medias.gazette-drouot.com/prod/medias/mediatheque/98230.jpg');background-size: cover">
+  <div class="bg-image" style="position: relative; height: 450px; width:100%;overflow:hidden;margin-top: -200px;background-image: url('https://medias.gazette-drouot.com/prod/medias/mediatheque/98230.jpg');background-size: cover">
   </div>
-
+  
   <nav class="navbar navbar-expand-lg  fixed-top navbar-light" style="background-color: #A2C7E1;">
     <a class=" navbar-brand" href="{{ url_for('accueil') }}">Polluradar</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-
+  
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
@@ -94,7 +94,7 @@
           <li class="nav-item active">
             <a class="nav-link" href="{{ url_for('carte') }}">Carte</a>
           </li>
-
+  
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="false">
@@ -108,7 +108,9 @@
       </ul>
       {% include "partials/formulaires/recherche_rapide.html" %}
     </div>
+  
   </nav>
+  
 
   <div class="container">
     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -128,125 +130,6 @@
       </div>
     </div>
   </div>
-
-  <script>
-    function autocomplete(inp, arr) {
-      var currentFocus;
-      inp.addEventListener("input", function (e) {
-        var a, b, i, val = this.value;
-        closeAllLists();
-        if (!val) { return false; }
-        currentFocus = -1;
-        a = document.createElement("DIV");
-        a.setAttribute("id", this.id + "autocomplete-list");
-        a.setAttribute("class", "autocomplete-items");
-        this.parentNode.appendChild(a);
-        for (i = 0; i < arr.length; i++) {
-          if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-            b = document.createElement("DIV");
-            b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
-            b.innerHTML += arr[i].substr(val.length);
-            b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
-            b.addEventListener("click", function (e) {
-              inp.value = this.getElementsByTagName("input")[0].value;
-              closeAllLists();
-            });
-            a.appendChild(b);
-          }
-        }
-      });
-      inp.addEventListener("keydown", function (e) {
-        var x = document.getElementById(this.id + "autocomplete-list");
-        if (x) x = x.getElementsByTagName("div");
-        if (e.keyCode == 40) {
-          currentFocus++;
-          addActive(x);
-        } else if (e.keyCode == 38) { 
-          currentFocus--;
-          addActive(x);
-        } else if (e.keyCode == 13) {
-          e.preventDefault();
-          if (currentFocus > -1) {
-            if (x) x[currentFocus].click();
-          }
-        }
-      });
-      function addActive(x) {
-        if (!x) return false;
-        removeActive(x);
-        if (currentFocus >= x.length) currentFocus = 0;
-        if (currentFocus < 0) currentFocus = (x.length - 1);
-        x[currentFocus].classList.add("autocomplete-active");
-      }
-      function removeActive(x) {
-        for (var i = 0; i < x.length; i++) {
-          x[i].classList.remove("autocomplete-active");
-        }
-      }
-      function closeAllLists(elmnt) {
-        var x = document.getElementsByClassName("autocomplete-items");
-        for (var i = 0; i < x.length; i++) {
-          if (elmnt != x[i] && elmnt != inp) {
-            x[i].parentNode.removeChild(x[i]);
-          }
-        }
-      }
-      document.addEventListener("click", function (e) {
-        closeAllLists(e.target);
-      });
-    }
-  
-    const appel = fetch('{{url_for("autocompletion", chaine=chaine)}}').then(
-      (response) => response.json()
-    ).then(
-      (data) => { return data; }
-    ).catch(function (err) {
-      console.log('Fetch Error :-S', err);
-    });
-  
-    const etablissement = async () => {
-      const a = await appel;
-      console.log(a);
-      autocomplete(document.getElementById("recherche_rapide_input"), a);
-    };
-    pays();
-  </script>
-
-<!--
-  <script>
-async function autocomplete(inp) {
-const response = await fetch('/autocompletion'); 
-const data = await response.json();
-var currentFocus;
-inp.addEventListener("input", function (e) {
-var a, b, i, val = this.value;
-closeAllLists();
-if (!val) { return false; }
-currentFocus = -1;
-a = document.createElement("DIV");
-a.setAttribute("id", this.id + "autocomplete-list");
-a.setAttribute("class", "autocomplete-items");
-this.parentNode.appendChild(a);
-for (i = 0; i < data.length; i++) {
-if (data[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-b = document.createElement("DIV");
-b.innerHTML = "<strong>" + data[i].substr(0, val.length) + "</strong>";
-b.innerHTML += data[i].substr(val.length);
-b.innerHTML += "<input type='hidden' value='" + data[i] + "'>";
-b.addEventListener("click", function (e) {
-inp.value = this.getElementsByTagName("input")[0].value;
-closeAllLists();
-});
-a.appendChild(b);
-}
-}
-})
-};
-document.addEventListener("DOMContentLoaded", function () {
-autocomplete(document.getElementById("recherche_rapide_input"));
-});
-</script>
--->
 </body>
 
 </html>

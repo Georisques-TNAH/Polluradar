@@ -1,5 +1,66 @@
-<form  autocomplete="off" class="form-inline"  action="{{url_for('recherche_rapide')}}">
-    <input  id="recherche_rapide_input" class="form-control autocomplete" type="search" name="chaine" 
-        placeholder="Recherche" aria-label="Recherche" >
+<form autocomplete="on" class="form-inline" action="{{ url_for('recherche_rapide') }}" style="position: relative;">
+    <input id="recherche_rapide_input" class="form-control autocomplete" type="search" name="chaine" 
+        placeholder="Recherche" aria-label="Recherche">
     <button class="btn btn-outline-info" type="submit">Rechercher</button>
+    <ul id="autocompletion-list" class="list-group autocomplete-items" style="position: absolute; width: fit-content; top: 100%;"></ul>
 </form>
+
+
+<script>
+    const input = document.getElementById('recherche_rapide_input');
+
+    input.addEventListener('input', async (event) => {
+        const query = event.target.value.trim();
+        if (query.length > 0) {
+            const results = await fetchAutocompleteResults(query);
+            renderAutocompleteResults(results);
+        } else {
+            clearAutocompleteResults();
+        }
+    });
+
+    const fetchAutocompleteResults = async (query) => {
+        try {
+            const response = await fetch(`/autocompletion/${query}`);
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Error fetching autocomplete results:', error);
+            return [];
+        }
+    };
+
+    const renderAutocompleteResults = (results) => {
+        const autocompletionList = document.getElementById('autocompletion-list');
+        autocompletionList.innerHTML = '';
+
+        // Utiliser un Set pour stocker les résultats uniques
+        const uniqueResults = new Set(results);
+
+        // Convertir le Set en tableau
+        const uniqueResultsArray = [...uniqueResults];
+
+        // Afficher les résultats uniques dans la liste
+        uniqueResultsArray.forEach((result) => {
+            const listItem = document.createElement('li');
+            listItem.textContent = result;
+            listItem.classList.add('list-group-item');
+            autocompletionList.appendChild(listItem);
+        });
+    };
+
+    const clearAutocompleteResults = () => {
+        const autocompletionList = document.getElementById('autocompletion-list');
+        autocompletionList.innerHTML = '';
+    };
+
+    // Gestionnaire d'événements pour le clic sur une suggestion
+    document.addEventListener('click', (event) => {
+        const clickedElement = event.target;
+        if (clickedElement.classList.contains('list-group-item')) {
+            const selectedValue = clickedElement.textContent;
+            input.value = selectedValue;
+            clearAutocompleteResults();
+        }
+    });
+</script>

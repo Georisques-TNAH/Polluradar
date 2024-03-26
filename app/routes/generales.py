@@ -171,7 +171,7 @@ def autocompletion(chaine=None):
         query_results = Etablissements.query
 
         if chaine:
-            query_results = query_results.filter(Etablissements.commune.ilike("%"+chaine+"%"))
+            query_results = query_results.filter(Etablissements.commune.ilike(chaine+"%"))
         
         donnees = [r.commune for r in query_results.all()]
         

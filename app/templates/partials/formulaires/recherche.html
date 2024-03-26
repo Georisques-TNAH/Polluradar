@@ -6,7 +6,12 @@
         {{ form.nom_commune(class_="form-control", placeholder_="Commune") }}
         <small id="nom_commune" class="form-text text-muted">Entrer tout ou partie du nom d'une
             commune</small>
+
+
+    <div id="autocompletion-results" class="form-group">
+        <ul id="autocompletion-list" class="list-group"></ul>
     </div>
+</div>
 
     <div class="form-group">
         <label for="code_postal">Code postal</label>
@@ -16,3 +21,64 @@
 
     <p><input type="submit" value="Rechercher"></p>
 </form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const communeInput = document.getElementById('nom_commune');
+        const autocompletionList = document.getElementById('autocompletion-list');
+
+        communeInput.addEventListener('input', async (event) => {
+            const query = event.target.value.trim();
+            if (query.length > 0) {
+                const results = await fetchAutocompleteResults(query);
+                renderAutocompleteResults(results);
+            } else {
+                clearAutocompleteResults();
+            }
+        });
+
+        autocompletionList.addEventListener('click', (event) => {
+            const clickedItem = event.target;
+            if (clickedItem.tagName === 'LI') {
+                const communeName = clickedItem.textContent.trim();
+                communeInput.value = communeName;
+                clearAutocompleteResults();
+            }
+        });
+    });
+
+    const fetchAutocompleteResults = async (query) => {
+        try {
+            const response = await fetch(`/autocompletion/${query}`);
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Error fetching autocomplete results:', error);
+            return [];
+        }
+    };
+
+    const renderAutocompleteResults = (results) => {
+    const autocompletionList = document.getElementById('autocompletion-list');
+    autocompletionList.innerHTML = '';
+
+    // Utiliser un Set pour stocker les résultats uniques
+    const uniqueResults = new Set(results);
+
+    // Convertir le Set en tableau
+    const uniqueResultsArray = [...uniqueResults];
+
+    // Afficher les résultats uniques dans la liste
+    uniqueResultsArray.forEach((result) => {
+        const listItem = document.createElement('li');
+        listItem.textContent = result;
+        listItem.classList.add('list-group-item');
+        autocompletionList.appendChild(listItem);
+    });
+};
+
+    const clearAutocompleteResults = () => {
+        const autocompletionList = document.getElementById('autocompletion-list');
+        autocompletionList.innerHTML = '';
+    };
+</script>

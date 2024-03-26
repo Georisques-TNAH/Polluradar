@@ -7,11 +7,22 @@ from ..models.formulaires import InsertionEtablissement
 
 @app.route("/insertions/etablissement", methods=['GET', 'POST'])
 def insertion_etablissement():
+    """
+    Route pour l'insertion d'un établissement dans la base de données.
+
+    Methods:
+        GET: Affiche le formulaire d'insertion.
+        POST: Traite les données soumises et insère un nouvel établissement dans la base de données.
+
+    Returns:
+        str: Redirection vers la page d'accueil après une insertion réussie.
+             Rendu du template d'insertion avec le formulaire et les messages flash en cas d'erreur.
+    """
+    # Création du formulaire d'insertion d'établissement
     form = InsertionEtablissement() 
 
     if form.validate_on_submit():
-        # Récupérer les données du formulaire
-        print('VALIDATE')
+        # Récupérer les données du formulaire soumises
         id = form.id.data
         nom = form.nom.data
         siret = form.siret.data
@@ -26,12 +37,12 @@ def insertion_etablissement():
         latitude = form.latitude.data
         longitude = form.longitude.data
         commune = form.commune.data
-        departement=form.departement.data
+        departement = form.departement.data
 
         # Vérifier si les champs obligatoires sont remplis
         if nom and id and departement :
             try:
-                # Créer un nouvel établissement
+                # Créer un nouvel établissement avec les données fournies
                 nouvel_etablissement = Etablissements(
                     id=id,
                     nom=nom,
@@ -50,11 +61,11 @@ def insertion_etablissement():
                     departement=departement
                 )
 
-                # Ajouter et enregistrer le nouvel établissement dans la base de données
+                # Ajouter le nouvel établissement à la session et enregistrer les modifications
                 db.session.add(nouvel_etablissement)
                 db.session.commit()
 
-                # Afficher un message de succès
+                # Afficher un message de succès et rediriger vers la page d'accueil
                 flash("L'insertion de l'établissement {} s'est correctement déroulée.".format(nom), 'info')
                 return redirect(url_for('accueil'))
             
@@ -63,42 +74,13 @@ def insertion_etablissement():
                 db.session.rollback()
                 flash("Une erreur s'est produite lors de l'insertion de l'établissement : {}".format(str(e)), 'error')
         else:
+            # Si des champs obligatoires sont manquants, afficher un message d'erreur
             flash("Veuillez remplir tous les champs obligatoires.", 'error')
             return redirect(url_for('accueil'))
 
+    # Rendre le template d'insertion avec le formulaire
     return render_template("pages/insertion_etablissement.html", 
                            sous_titre="Insertion établissement", 
                            form=form)
 
 
-
-
-
-"""
-@app.route("/insertions/ressource", methods=['GET', 'POST'])
-def insertion_ressource():
-    form = InsertionRessource() 
-
-    try:
-        if form.validate_on_submit():
-            nom_res =  clean_arg(request.form.get("nom_res", None))
-            id_res =  clean_arg(request.form.get("code_res", None))
-
-            nouvelle_ressource = Resources(id=id_res, 
-                name=nom_res)
-
-            db.session.add(nouvelle_ressource)
-            db.session.commit()
-
-            flash("L'insertion de la ressource "+ nom_res + " s'est correctement déroulée", 'info')
-    
-    except Exception as e :
-        flash("Une erreur s'est produite lors de l'insertion de " + nom_res + " : " + str(e), "error")
-
-        db.session.rollback()
-    
-    return render_template("pages/insertion_ressource.html", 
-            sous_titre= "Insertion ressource" , 
-            form=form)
-
-"""

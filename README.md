@@ -47,7 +47,7 @@ Puis la commande :
 Entrez la commande suivante dans votre terminal :
 
     python3 run.py
-Ceci lance l'application et un message du type `* Running on http://127.0.0.1:5000` s'affiche dans votre teminal. Cliquez sur le lien. 
+Ceci lance l'application et un message du type `* Running on http://127.0.0.1:5000` s'affiche dans votre teminal. Cliquez sur le lien ou copiez/collez le dans votre navigateur. 
 
 ### Etape 7 : Quitter l'application 
 Afin quitter l'application, effectuer un `ctrl+C` dans le terminal puis entrez `deactivate` dans votre terminal. 

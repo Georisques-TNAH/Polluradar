@@ -52,4 +52,6 @@ Ceci lance l'application et un message du type `* Running on http://127.0.0.1:50
 ### Etape 7 : Quitter l'application 
 Afin quitter l'application, effectuer un `ctrl+C` dans le terminal puis entrez `deactivate` dans votre terminal. 
 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 Cette application a été réalisée par [Selma Bensidhoum](https://github.com/SelmaKaina), [Mathilde Prades](https://github.com/Mathilde-prds) et [Ronan Vichot](https://github.com/RonanT8).

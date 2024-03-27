@@ -1,0 +1,102 @@
+{% extends "partials/conteneur.html" %}
+{% block body %}
+
+<div class="container">
+
+    <!-- affichage en cas d'absence de résultats (lors du premier chargement de la page, ou d'absence de résultats suite à la recherche)-->
+    {% if not donnees %}
+    <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4">
+
+            <h3 data-toggle="collapse" data-target="#collapseExample" aria-expanded="false"
+                aria-controls="collapseExample">
+                Effectuer une recherche <i class="fa-solid fa-caret-down"></i>
+        </h3>
+            <div class="collapse show" id="collapseExample">
+                <div class="card card-body">
+                    {% include "partials/formulaires/recherche.html" %}
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4"></div>
+    </div>
+
+    {%else%}
+
+    <!--affichage caché du formulaire-->
+    <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4">
+
+            <h3 data-toggle="collapse" data-target="#collapseExample" aria-expanded="false"
+                aria-controls="collapseExample">
+                Afficher la recherche <i class="fa-solid fa-caret-down"></i>
+        </h3>
+            <div class="collapse " id="collapseExample">
+                <div class="card card-body">
+                    {% include "partials/formulaires/recherche.html" %}
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4"></div>
+    </div>
+
+    <!-- affichage des résultats-->
+<div>
+    <h1>Résultats de la recherche {{ requete }}</h1>
+    <p>Nombre total d'établissements trouvés : {{ donnees|length }}</p>      
+    <br>
+    <!-- affichage des résultats -->
+    <div style="margin-bottom: 50px;">
+<div class="row">
+    <div class="col-4">
+        <div class="list-group" id="list-tab" role="tablist">
+            {% for etablissement in donnees %}
+            {% if loop.first %}
+            <a class="list-group-item list-group-item-action active" id="list-{{etablissement.id}}-list" data-toggle="list"
+                href="#list-{{etablissement.id}}" role="tab" aria-controls="{{etablissement.id}}">{{etablissement.nom | safe}}</a>
+            {% else %}
+            <a class="list-group-item list-group-item-action" id="list-{{etablissement.id}}-list" data-toggle="list"
+                href="#list-{{etablissement.id}}" role="tab" aria-controls="{{etablissement.id}}">{{etablissement.nom | safe}}</a>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="col-8">
+        <div class="tab-content" id="nav-tabContent">
+            {% for etablissement in donnees %}
+            {% if loop.first %}
+            <div class="tab-pane fade show active" id="list-{{etablissement.id}}" role="tabpanel"
+                aria-labelledby="list-{{etablissement.id}}-list">
+                <a class="css_links" href="{{ url_for('un_etablissement', nom_etablissement=etablissement.nom) }}">
+                    Voir les données de {{etablissement.nom | safe}}</a>
+                    <br>
+                    {{etablissement.adresse | safe}}
+                    <br>
+                    {{etablissement.code_postal | safe}}
+                    <br>
+                    {{etablissement.commune | safe}}
+                </div>
+                {% else %}
+                <div class="tab-pane fade" id="list-{{etablissement.id}}" role="tabpanel"
+                    aria-labelledby="list-{{etablissement.id}}-list">
+                    <a class="css_links" href="{{ url_for('un_etablissement', nom_etablissement=etablissement.nom) }}"> Voir les données de {{etablissement.nom | safe}}</a>
+                    <br>
+                       {{etablissement.adresse | safe}}
+                    <br>
+                    {{etablissement.code_postal | safe}}
+                    <br>
+                    {{etablissement.commune | safe}}
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    {%endif%}
+</div>
+    </div>
+    
+    {% endblock %}
+    

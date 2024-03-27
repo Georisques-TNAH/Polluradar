@@ -1,0 +1,133 @@
+{% extends "partials/conteneur.html" %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <h1>Ensemble des données sur l'établissement "{{sous_titre}}"</h1>
+        <br>
+    </div>
+
+    <div id="accordion">
+        <!--généralités-->
+        <div class="card">
+            <div class="card-header" id="headinggeneralites">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapsegeneralites"
+                        aria-expanded="false" aria-controls="collapsegeneralites">
+                        Généralités
+                    </button>
+                </h5>
+            </div>
+
+            <div id="collapsegeneralites" class="collapse " aria-labelledby="headinggeneralites"
+                data-parent="#accordion">
+                <div class="card-body">
+                    <p><b>Identifiant</b> : {{donnees.id}}</p>
+                    <p><b>Nom</b> : {{donnees.nom}}</p>
+                    {% if  donnees.produitLabel %}
+                    <p><b>Produit</b> : {{donnees.produitLabel}}</p>
+                    {% endif %}
+                    <p><b>Secteur na38</b> : {{donnees.secteur_na38}}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- administratif-->
+        <div class="card">
+            <div class="card-header" id="headingadministratif">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseadministratif"
+                        aria-expanded="false" aria-controls="collapseadministratif">
+                        Administratif
+                    </button>
+                </h5>
+            </div>
+
+            <div id="collapseadministratif" class="collapse " aria-labelledby="headingadministratif" data-parent="#accordion">
+                <div class="card-body">
+                    <p><b>SIRET </b>: {{donnees.siret}}</p>
+                    <p><b>SIREN </b>: {{donnees.siren}}</p>
+                    <p><b>Code APE </b>: {{donnees.code_ape}}</p>
+                    {% if  donnees.dateCreation %}
+                    <p><b>Date de création </b>: {{donnees.dateCreation}}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- localisation-->
+        <div class="card">
+            <div class="card-header" id="headinglocalisation">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapselocalisation"
+                        aria-expanded="false" aria-controls="collapselocalisation">
+                        Localisation
+                    </button>
+                </h5>
+            </div>
+
+            <div id="collapselocalisation" class="collapse " aria-labelledby="headinglocalisation" data-parent="#accordion">
+                <div class="card-body">
+                    <p><b>Adresse </b>: {{donnees.adresse}}</p>
+                    <p><b>Code postal </b>: {{donnees.code_postal}}</p>
+                    <p><b>Commune </b>: {{donnees.commune}}</p>
+                    <!--<p><b>Département </b>: {{donnees.departement}}</p>-->
+                </div>
+            </div>
+        </div>
+
+        <!-- coordonnées -->
+        {% if  donnees.latitude %}
+        <div class="card">
+            <div class="card-header" id="headingcoordonnees">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapsecoordonnees"
+                        aria-expanded="false" aria-controls="collapsecoordonnees">
+                        Coordonnées
+                    </button>
+                </h5>
+            </div>
+
+            <div id="collapsecoordonnees" class="collapse " aria-labelledby="headingcoordonnees" data-parent="#accordion">
+                <div class="card-body">
+                    <p><b>Latitude </b>: {{donnees.latitude}}</p>
+                    <p><b>Longitude </b>: {{donnees.longitude}}</p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- polluants -->
+        <div class="card">
+            <div class="card-header" id="headingpolluants">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapsepolluants"
+                        aria-expanded="false" aria-controls="collapsepolluants">
+                        Polluants
+                    </button>
+                </h5>
+            </div>
+
+            <div id="collapsepolluants" class="collapse " aria-labelledby="headingpolluants" data-parent="#accordion">
+
+                <div class="card-body">
+                    <p><b>Polluant(s)</b>:
+                        {% set polluants = donnees.polluant.all() %}
+                        {% if polluants %}
+                    <ul>
+                            {% for polluant in polluants %}
+                                <li><a class="css_links" href="{{polluant.fiche_inrs}}">{{polluant.nom}}</a></li>
+                            {% endfor %}
+                        {% else %}
+                            Polluants non renseignés par l'établissement.
+                        {% endif %}
+                    </ul> 
+                </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

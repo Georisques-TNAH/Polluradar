@@ -5,7 +5,7 @@
 <div class="container">
     <h1>Carte des établissements rejettant des polluants en France</h1>
     <br>
-    <div id="map" style="height: 500px;">
+    <div id="map" style="width: 100%; height: 500px;">
 
     </div>
 </div>
@@ -23,44 +23,20 @@
     
     // Paramètres de la carte
     var map = L.map('map', {center: latlng, zoom: 6, layers: [tiles]});
-    
-    // Implémentation des données de Etablissements transformées en Json
-    var etablissementsGeoJson = JSON.parse('{{ etablissements | tojson | safe }}');
+
+    // Initialisation de MarkerCluster
+    var markerCluster = L.markerClusterGroup();
+
+    var donnees = JSON.parse('{{ donnees | tojson | safe }}');
 
     // Création des marqueurs Leaflet
-    // Object.keys(etablissementsGeoJson).forEach(function(key) {
-    //     var etab = etablissementsGeoJson[key];
-    //     L.marker([etab.latitude, etab.longitude]).addTo(map).bindPopup(etab.nom);
-    // }).addTo(map);
+    donnees.forEach(function(etablissement) {
+        var marker = L.marker([etablissement.latitude, etablissement.longitude]);
+            marker.bindPopup(etablissement.nom);
+            markerCluster.addLayer(marker);
+        });
 
-    
-    // Création de la couche contenant les marqueurs des établissements
-    var etablissementsMarqueurs = L.geoJSON(etablissements, {
-        onEachFeature: popupContent,
-        pointToLayer: function createMarkers(feature, latlng) {
-            // Vérifier si les coordonnées de latitude et longitude existent
-            if (feature.properties.latitude !== undefined && feature.properties.longitude !== undefined) {
-                // Créer un marqueur uniquement si les coordonnées existent
-                return L.marker(latlng).bindPopup(
-                    `<b>Nom :</b> ${feature.properties.nom}<br>`
-                );
-            }
-        }
-    }).addTo(map);
-
-
-    // function popupContent(feature, layer){
-    //     layer.on({
-    //         'onclick': function(e) {
-    //         this.openPopup();
-    //         } })
-    // var popupContent = "<div style='width: 100%'><p><h3  style='text-align: center'>"+feature.properties.nom + "</h3></p>"
-    //     layer.bindPopup(popupContent);    }
-
-
-    // var markerCluster = L.markerClusterGroup();
-    // markerCluster.addLayer(etablissementsMarqueurs);
-    // map.addLayer(markerCluster);
+    map.addLayer(markerCluster);
     
 </script>
 {% endblock %}

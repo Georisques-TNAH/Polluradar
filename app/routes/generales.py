@@ -1,7 +1,6 @@
 from ..app import app, db
 from flask import Flask, render_template, request, abort, flash, jsonify
 from sqlalchemy import or_, func, text
-import geojson
 from ..models.georisques import Etablissements, Departements, Polluants
 from ..models.formulaires import Recherche
 
@@ -259,10 +258,9 @@ def autocompletion(chaine=None):
         print(e)
         return []
 
-
 @app.route('/carte')
 def carte():
-    # Création d'une liste pour stocker les données des marqueurs GeoJSON
+    # Création d'une liste pour stocker les données des marqueurs
     donnees = []
 
     # Appel des données contenues dans Etablissements
@@ -276,51 +274,10 @@ def carte():
                 "longitude": etablissement.longitude,
             }
 
-            # Création du point GeoJSON
-            localisation = geojson.Point((etablissement.latitude, etablissement.longitude))
-
-            # Création du marqueur du point GeoJSON
-            marqueur = geojson.Feature(
-                geometry=localisation,
-                properties=champs
-            )
-
             # Ajout du marqueur à la liste des marqueurs créés
-            donnees.append(marqueur)
+            donnees.append(champs)
 
-    # Création de la collection de points GeoJSON
-    feature_collection = geojson.FeatureCollection(donnees)
-    
-    return render_template('pages/carte.html', etablissements=feature_collection)
-
-# BAAAAAAAAAAAAARRRRRRRRRRRRRRRRRRRRRRRIEEEEEEEEEEEEEEEEEEEEEEEEEREEEEEEEEEEEEEEEEEEEEEEEE
-
-
-
-
-# Convertir les établissements en GeoJSON
-
-
-    # Liste de sites géolocalisés
-    # sites = [
-    #     {"name": "Site 1", "location": [48.8566, 2.3522]},  # Exemple de coordonnées (Paris)
-    #     {"name": "Site 2", "location": [51.5074, -0.1278]},  # Exemple de coordonnées (Londres)
-    #     # Ajoutez d'autres sites avec leurs coordonnées
-    # ]
-    
-    # return render_template('pages/carte.html', sites=sites)
-
-
-    # code_postal = request.form.get("code_postal", None)
-
-    # sites = {}
-
-    # for etablissement in Etablissements.query.all():
-    #     name = Departements.query.filter_by(id=etablissement.departement).first()
-    #     if departement.nom in sites:
-    #         sites[departement.nom].append(etablissement)
-    #     else:
-    #         sites[departement.nom] = [etablissement]
+    return render_template('pages/carte.html', donnees=donnees)
 
 @app.route('/datavisualisations')
 def datavisualisations():

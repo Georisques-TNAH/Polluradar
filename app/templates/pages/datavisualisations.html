@@ -2,7 +2,7 @@
 
 {% block body %}
 <div class="container">
-    <h1>Data visualisations produites avec Tableau</h1>
+    <h1>Visualisations de données produites avec Tableau</h1>
 </div>
 <div id="dataviz" style="position: absolute; left:-20%; transform: scale(0.9);">
 
@@ -29,5 +29,6 @@
         var viz = new tableau.Viz(containerDiv, url, options);
     }
     document.addEventListener("DOMContentLoaded", initDataviz);
+
 </script>
 {% endblock %}

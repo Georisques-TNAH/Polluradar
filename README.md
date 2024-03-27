@@ -33,7 +33,7 @@ Coller les lignes suivantes dans le `.env` en les adaptant :
     WTF_CSRF_ENABLE=True
     SECRET_KEY=[CRÉER UNE CLÉ SECRÈTE]
 
-### Etape 5 : Installer les requierments (dépendances ?)
+### Etape 5 : Installer les requirements (dépendances ?)
 Entrez la commande suivante dans votre terminal :
 
     source env/Scripts/activate

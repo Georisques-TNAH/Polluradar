@@ -14,20 +14,6 @@ def accueil():
     """
     return render_template("pages/accueil.html", sous_titre="Accueil")
 
-@app.route("/test/<int:etablissement_id>")
-def etablissement_detail(etablissement_id):
-    """
-    Route pour afficher les détails d'un établissement.
-
-    Args:
-        etablissement_id (int): L'identifiant de l'établissement.
-
-    Returns:
-        template: Template pour afficher les détails de l'établissement.
-    """
-    etablissement = Etablissements.query.get(etablissement_id)
-    return render_template("pages/test.html", etablissement=etablissement)
-
 @app.route("/etablissements")
 @app.route("/etablissements/<int:page>")
 def etablissements(page=1):
@@ -265,7 +251,7 @@ def carte():
 
     # Appel des données contenues dans Etablissements
     for etablissement in Etablissements.query.all():
-        # Vérifier si les coordonnées de latitude et de longitude sont disponibles
+        # Vérifie si les coordonnées de latitude et de longitude sont disponibles
         if etablissement.latitude != "" and etablissement.longitude != "":
             # Création des propriétés de l'établissement
             champs = {
@@ -289,7 +275,7 @@ def graph1():
 
 @app.route("/graph1_donnees", methods=['GET', 'POST'])
 def graph1_donnees():
-    total = db.session.query(func.count(Etablissements.id)).scalar()
+    total_etab = db.session.query(func.count(Etablissements.id)).scalar()
     donnees_brutes = db.session.query(Etablissements.secteur_na38, func.count(Etablissements.id)) \
         .group_by(Etablissements.secteur_na38) \
         .order_by(func.count(Etablissements.id).desc()) \
@@ -298,10 +284,57 @@ def graph1_donnees():
     donnees = []
 
     for secteur_na38, occurrences in donnees_brutes:
-        pourcentage = (occurrences / total) * 100
+        pourcentage = (occurrences / total_etab) * 100
         donnees.append({
             "secteur": secteur_na38,
             "pourcentage": pourcentage
         })
+
+    return jsonify(donnees)
+
+@app.route("/graph2", methods=['GET', 'POST'])
+def graph2():
+    return render_template("pages/graph2.html")
+
+@app.route("/graph2_donnees", methods=['GET', 'POST'])
+def graph2_donnees():
+    # Compte le nombre total d'établissements
+    total_etab = db.session.query(func.count(Etablissements.id)).scalar()
+
+    # Compte le nombre d'établissements par département
+    etab_par_departement = db.session.query(Departements.nom, func.count(Etablissements.id)) \
+        .join(Etablissements, Departements.id == Etablissements.departement) \
+        .group_by(Departements.nom) \
+        .all()
+
+    pourcentage_etab_par_département = []
+
+    # Calcul le pourcentage d'établissements dans chaque département par rapport au total national
+    for departement, occurrences in etab_par_departement:
+        pourcentage = (occurrences / total_etab) * 100
+        pourcentage_etab_par_département.append({
+            "departement": departement,
+            "pourcentage": pourcentage
+        })
+
+    # Compte le nombre d'établissements par type de milieu pollué dans chaque département
+    pourcentage_milieu_par_departement = db.session.query(Departements.nom, Etablissements.milieu_pollué, func.count(Etablissements.id)) \
+        .join(Etablissements, Departements.id == Etablissements.departement) \
+        .group_by(Departements.nom, Etablissements.milieu_pollué) \
+        .all()
+
+    donnees = []
+
+    # Calcul le pourcentage d'établissements rejetant chaque type de milieu pollué dans chaque département
+    for departement, milieu_pollué, occurrences in pourcentage_milieu_par_departement:
+        # Trouve le nombre total d'établissements dans ce département rejetant n'importe quel type de milieu pollué
+        total_etab_dept = next((item["pourcentage"] for item in pourcentage_etab_par_département if item["departement"] == departement), None)
+        if total_etab_dept is not None:
+            pourcentage = (occurrences / total_etab_dept) * 100
+            donnees.append({
+                "departement": departement,
+                "milieu_pollué": milieu_pollué,
+                "pourcentage": pourcentage
+            })
 
     return jsonify(donnees)

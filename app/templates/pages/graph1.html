@@ -3,7 +3,7 @@
 {% block body %}
 
 <div class="container">
-    <h1 style="text-align: center;">Pourcentage d’établissements rejetant des polluants par secteur d’activité, à l'échelle nationale</h1>
+    <h1>Graphique</h1>
 </div>
 <canvas id="graphique" style="width: 1200px;"></canvas>
 
@@ -47,7 +47,7 @@
             plugins: {
                 legend: {
                     display: true,
-                    position: 'right', // Position de la légende (peut être 'top', 'bottom', 'left' ou 'right')
+                    position: 'top', // Position de la légende (peut être 'top', 'bottom', 'left' ou 'right')
                     labels: {
                         boxWidth: 20, // Largeur de la boîte de la légende
                         fontSize: 8, // Taille de la police de la légende

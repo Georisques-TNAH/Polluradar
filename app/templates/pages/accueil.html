@@ -3,9 +3,122 @@
 {% block body %}
 <div class="container">
     <h1>Bienvenue sur le site de <b>Polluradar</b> !</h1>
-    <p>L’objectif de l’application est de permettre aux utilisateurs de chercher les établissements 
-        industriels rejetant des polluants autour d’un lieu donné (ville + département), la recherche 
-        renvoie une carte avec des ronds de couleurs (en fonction de la dangerosité des polluants rejetés)
-         et chaque rond est cliquable et renvoie à une fiche plus détaillée concernant l’entreprise, le type de polluants, le milieu pollué.</p>
+
+    <div class="card">
+        <div class="card-header" id="headingapplication">
+            <h5 class="mb-0">
+                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseapplication"
+                    aria-expanded="false" aria-controls="collapseapplication">
+                    Fonctionnement de l'application
+                </button>
+            </h5>
+        </div>
+    
+        <div id="collapseapplication" class="collapse " aria-labelledby="headingapplication" data-parent="#accordion">
+            <div class="card-body">
+                <h3>Fonctionnement de l'application</h3>
+                <p>Notre application a pour objectif d'informer le public sur les installations rejetant des polluants en France.
+                    Les informations relatives aux établissements sont accessibles via la liste des établissants ou leur regroupement par département et par polluants rejetés.</p>
+
+                <div style="display: flex; flex-direction: row; justify-content: center;">
+                    <!-- Premier encadré -->
+                    <div class="encadre-div" style="text-align: center; margin-right: 10px; border: 1px solid  #2F6565; border-radius: 10px; padding: 10px;">
+                        <a href="/departements" style="text-decoration: none; color: inherit;">
+                            <img src="https://departements.fr/wp-content/uploads/2023/01/Logo-Departements-de-France-quadri-1.svg" alt="Image 1" style="width: 100px; height: 100px;">
+                            <p>Liste des établissements par département</p>
+                        </a>
+                    </div>
+                    <!-- Deuxième encadré -->
+                    <div class="encadre-div" style="text-align: center; border: 1px solid  #2F6565; border-radius: 10px; padding: 10px;">
+                        <a href="/polluants" style="text-decoration: none; color: inherit;">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/Hazard_N.svg" alt="Image 2" style="width: 100px; height: 100px;">
+                            <p>Liste des établissements par polluant</p>
+                        </a>
+                    </div>
+                </div>
+                <br/>
+                <p>La carte interactive des installations, réalisée grâce aux coordonnées présentes dans les données de la base Géorisques, permet de visualiser les installations présentes sur un territoire choisi et d'accéder directement aux fiches de ces établissements.</p>
+                <div style="display: flex; flex-direction: row; justify-content: center;">
+                    <div class="encadre-div" style="text-align: center; margin-right: 10px; border: 1px solid  #2F6565; border-radius: 10px; padding: 10px;">
+                        <a href="/carte" style="text-decoration: none; color: inherit;">
+                            <img src="https://www.cartesfrance.fr/cartes/carte-france-departements.png" amt="Image 1" style="width: 200px; height: 200px;">
+                            <p>Carte interactive des établissements rejetant des polluants en France</p>
+                        </a>
+                    </div>
+                </div>
+                <br/>
+                <p>Le moteur de recherche permet d'afficher la liste des établissements présents dans la commune recherchée.</p>
+                <div style="display: flex; flex-direction: row; justify-content: center;">
+                    <div class="encadre-div" style="text-align: center; margin-right: 10px; border: 1px solid  #2F6565; border-radius: 10px; padding: 10px;">
+                        <a href="/recherche" style="text-decoration: none; color: inherit;">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Loupe.svg/120px-Loupe.svg.png?20110719175414" amt="Image 1" style="width: 150px; height: 150px;">
+                            <p>Chercher les établissements rejetant les polluants dans votre commune.</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header" id="headingdatabasespresentation">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapsedatabasespresentation"
+                        aria-expanded="false" aria-controls="collapsedatabasespresentation">
+                        Les jeux de données
+                    </button>
+                </h5>
+            </div>
+        
+            <div id="collapsedatabasespresentation" class="collapse " aria-labelledby="headingdatabasespresentation" data-parent="#accordion">
+                <div class="card-body" style=" display:block; flex-direction: column; justify-content: center;">
+                    <h3>Les jeux de données utilisés</h3>
+        <p>La première étape fut de choisir un jeu de données principal parmi les <a href="https://www.georisques.gouv.fr/donnees/bases-de-donnees">bases de données mises à disposition sur Géorisques</a>, portail de prévention des risques naturels et technologiques mis en place par le Ministère de la Transition écologique en partenariat avec le BRGM (Bureau des Recherches Géologiques et Minières). Ces bases de données se divisent en deux principaux groupes : les risques naturels et les risques technologiques. Notre choix s'est porté sur les données relatives aux risques technologiques, incluant les questions de pollution et de gestion des déchets.
+        Parmi les jeux de données traitant des risques technologiques, nous avons choisi "Installations industrielles rejetant des polluants". Il présente les émissions polluantes des installations industrielles françaises et s'appuie sur le registre national des émissions polluantes.</p>
+        
+        <h5>Le Registre français des rejets et des transferts de polluants (IREP)</h5>
+        <p>Ce registre, produit par le Ministère chargé de l'environnement, présente les flux annuels de polluants émis dans l'eau, l'air, le sol, ainsi que les déchets produits par les installations classées soumises à une autorisation préfectorale. Ces données sont collectées grâce à un système de télédéclaration : elles sont déclarées annuellement par les exploitants, sous le contrôle de l'inspection des installations classées. Ce registre a pour but de répondre aux exigences du Protocole international PRTR (KIEV, 2003) sur les registres des rejets et transferts de polluants, ainsi qu’aux exigences du règlement européen E-PRTR n°166/2006 du 18 janvier 2006 concernant la création d’un registre européen des rejets et des transferts de polluants (registre E-PRTR). Il a également un rôle sanitaire lié à l'évaluation de la qualité de l'air en France, à la mise en place de mesures de réduction des rejets de polluants. Enfin, il s'inscrit dans le contexte de l'open data et de la transparence des données publiques et doit également permettre d'informer le public sur les sites industriels polluants installés sur le territoire national.</p>
+        
+        <p>Le contexte de production de ces données est essentiel pour en comprendre l'intérêt et en mesurer — ou en relativiser — la pertinence.</p>
+        
+            <p style="width: 75%; text-align: justify; margin: auto;">"Le Registre des Emissions Polluantes recueille uniquement les données des exploitants des principales installations industrielles, des stations d'épuration urbaines de plus de 100 000 équivalents habitants et de certains élevages. \href{http://www.ineris.fr/aida/consultation_document/23106}{L'arrêté du 31 janvier 2008} définit la liste des établissements soumis à cette déclaration annuelle ainsi que la liste des polluants concernés et les seuils de déclaration obligatoire. Les installations couvertes sont les installations classées soumises au régime de l'autorisation ou de l'enregistrement (Titre 1er du livre V du Code de l'environnement) ainsi que celles visées par le règlement européen E-PRTR n°166/2006 du 18 janvier 2006 concernant la création d'un registre européen des rejets et des transferts de polluants (registre E-PRTR)." (source : <a href="https://www.georisques.gouv.fr/consulter-les-dossiers-thematiques/registre-des-emissions-polluantes">www.georisques.gouv.fr</a>).</p>
+        <br/>
+            <p>De plus, le registre vise une liste prédéterminée de polluants. Ainsi ne sont pas représentés dans ces données les établissements non concernés par l'arrêté du 31 janvier 2008, ceux ne rejetant pas un des polluant listé, ou ceux qui ne rejettent qu'une faible quantité d'entre eux. Enfin, le niveau de dangerosité varie d'un polluant à un autre et n'a pas été estimé.</p>
+        
+        
+        <h5>Les installations industrielles rejetant des polluants</h5>
+        <p>La base de données "Installations industrielles rejetant des polluants" est mise à jour deux fois par an. Pour chaque année entre 2003 et 2022, elle contient un ensemble de 8 fichiers CSV :
+        <ul>
+            <li> Les émissions</li>
+            <li> Les établissements</li>
+            <li> Les prélèvements</li>
+            <li> Les rejets</li>
+            <li> Les productions de déchets dangereux</li>
+            <li> Les productions de déchets non-dangereux</li>
+            <li> Le traitement de déchets dangereux</li>
+            <li> Le traitement de déchets non-dangereux</li>
+            </ul>
+            </p>
+        
+            <p>Cette application se base sur les données des CSV "émissions" et "établissants" après nettoyage et enrichissement.</p>
+        
+        <h6 style="text-decoration: underline;">Etablissements</h6>
+        Les données relatives aux établissements sont très complètes et majoritairement propres. Elles apportent des éléments de description sur 9 787 établissements recensés sur le territoire français.
+        <ul>
+            <li>L'identifiant</li> 
+            <li>Le nom de l'établissement</li>
+            <li>Le numéro SIRET</li>
+            <li>Le numéro SIREN</li>
+            <li>L'adresse</li>
+            <li>Le code postal</li>
+            <li>Le code APE</li>
+            <li>Le(s) milieu(x) d'émission de polluants (Air, Eau, Sol)</li>
+            <li>Le libellé des polluants rejetés</li>
+            <li>Le(s) produit(s) ou service(s) fournis par l'établissement (d'après les données présentent sur Wikidata)</li>
+        </ul>
+        
+        <h6 style="text-decoration: underline;">Les secteurs d'activité : code APE et libellé NAF</h6>
+        <p>Le code APE se base sur la nomenclature nationale d'activité française <a href="https://www.insee.fr/fr/information/2406147">NAF rév.2</a>, c'est pourquoi on le retrouve parfois sous le nom de "code NAF". La nomenclature actuelle NAF comporte 5 niveaux emboités : 21 sections, 88 divisions, 272 groupes, 615 classes et 732 sous-classes. Des niveaux intermédiaires ont été créés pour répondre aux besoins de la production de données de synthèse, notamment un niveau entre les "sections" et les "divisions" qui propose une typologie des secteurs d'activité limitée à 38 divisions. Le libellé APE déterminé à partir du code APE renvoie au niveau d'agrégation minimum associé à NAF rév.2 : il propose une typologie de 732 sous-classes.</p>
+                </div>
+            </div>
 </div>
 {% endblock %}

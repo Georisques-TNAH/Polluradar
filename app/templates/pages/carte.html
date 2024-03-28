@@ -32,10 +32,11 @@
     // Création des marqueurs Leaflet
     donnees.forEach(function(etablissement) {
         var marker = L.marker([etablissement.latitude, etablissement.longitude]);
-            marker.bindPopup(etablissement.nom);
-            markerCluster.addLayer(marker);
-        });
-
+        // Créer un lien vers la page descriptive de l'établissement
+        var popupContent = '<a href="/etablissements/' + etablissement.nom + '">' + etablissement.nom + '</a>';
+        marker.bindPopup(popupContent);
+        markerCluster.addLayer(marker);
+    });
     map.addLayer(markerCluster);
     
 </script>

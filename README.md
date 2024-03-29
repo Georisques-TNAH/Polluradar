@@ -1,6 +1,6 @@
 # Manuel de l'application :
 
-L’objectif de l’application est de permettre aux utilisateurs de chercher les établissements industriels rejetant des polluants autour d’un lieu donné (ville + département), la recherche renvoie une carte avec des ronds de couleurs (en fonction de la dangerosité des polluants rejetés) et chaque rond est cliquable et renvoie à une fiche plus détaillée concernant l’entreprise, le type de polluants, le milieu pollué.
+Notre application a pour objectif d'informer le public sur les installations rejetant des polluants en France. Les informations relatives aux établissements sont accessibles via la liste des établissements ou leurs regroupements par département ou par polluants rejetés. Une carte interactive des installations, réalisée grâce aux coordonnées présentes dans les données de la base Géorisques, permet de visualiser les installations présentes sur un territoire choisi et d'accéder directement aux fiches de ces établissements. Un moteur de recherche permet d'afficher la liste des établissements présents dans la commune recherchée.
 
 ## Instructions pour un premier lancement :
 Il est à noter que ces instructions s'adressent  à des utilisateurs de Linux. 
@@ -32,7 +32,7 @@ Coller les lignes suivantes dans le `.env` en les adaptant :
     SQLALCHEMY_ECHO=False
     WTF_CSRF_ENABLE=True
     SECRET_KEY=[CRÉER UNE CLÉ SECRÈTE]
-
+Sur Linux, l'URI de la base de données est du type : sqlite://///[chemin personnel]/polluradar.db
 ### Etape 5 : Installer les requirements (dépendances ?)
 Entrez la commande suivante dans votre terminal :
 

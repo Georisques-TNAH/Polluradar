@@ -25,7 +25,7 @@ Créer un fichier texte nommé `.env` au même niveau que le dossier `env` préc
 Coller les lignes suivantes dans le `.env` en les adaptant : 
 
     DEBUG=True
-    SQLALCHEMY_DATABASE_URI=[URI DE LA BASE DE DONNÉES SQLITE SITUÉ DANS LE DOSSIER APP/DATA]
+    SQLALCHEMY_DATABASE_URI=[URI DE LA BASE DE DONNÉES SQLITE]
     POLLUANT_PER_PAGE=10
     ETABLISSEMENT_PER_PAGE=10
     DPT_PER_PAGE=10
@@ -36,7 +36,7 @@ Coller les lignes suivantes dans le `.env` en les adaptant :
 ### Etape 5 : Installer les requirements (dépendances ?)
 Entrez la commande suivante dans votre terminal :
 
-    source env/Scripts/activate
+    source env/bin/activate
 Puis la commande : 
 
     pip install -r requirements.txt

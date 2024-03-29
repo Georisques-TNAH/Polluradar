@@ -49,7 +49,7 @@
                         var donneesCamembert = {
                             labels: [],
                             data: [],
-                            backgroundColor: ['#8a74ff', '#e24545', '#45e28f', '#dde245', '#45d7e2', '#cb45e2', '#e24585', '#e2a545'],
+                            backgroundColor: ['#c6c6c6', '#8a74ff', '#e24545', '#45e28f', '#dde245', '#45d7e2', '#cb45e2', '#e24585'],
                         };
 
                         // Nombre total d'établissements dans le département
@@ -102,11 +102,11 @@
                 });
             }
 
-            // Écouter les changements de sélection dans le menu déroulant
+            // Changements de sélection dans le menu déroulant
             document.getElementById('selectDepartement').addEventListener('change', function(event) {
-                // Récupérer la valeur sélectionnée dans le menu déroulant
+                // Récupère la valeur sélectionnée dans le menu déroulant
                 var departementSelectionne = event.target.value;
-                // Afficher les camemberts en fonction du département sélectionné
+                // Affiche les camemberts en fonction du département sélectionné
                 afficherCamemberts(departementSelectionne);
             });
 

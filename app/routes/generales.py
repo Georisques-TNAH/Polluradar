@@ -247,6 +247,12 @@ def autocompletion(chaine=None):
 
 @app.route('/carte')
 def carte():
+    """
+    Route pour afficher une carte avec des marqueurs représentant les établissements.
+
+    Returns:
+        template: Template pour afficher la carte avec les marqueurs.
+    """
     # Création d'une liste pour stocker les données des marqueurs
     donnees = []
 
@@ -264,18 +270,36 @@ def carte():
             # Ajout du marqueur à la liste des marqueurs créés
             donnees.append(champs)
 
-    return render_template('pages/carte.html', donnees=donnees)
+    return render_template('pages/carte.html', sous_titre="Carte", donnees=donnees)
 
 @app.route('/datavisualisations')
 def datavisualisations():
-    return render_template('pages/datavisualisations.html')
+    """
+    Route pour afficher une page des visualisations de données produites avec Tableau dans le cadre du livrable 2 du projet de groupe.
+
+    Returns:
+        template: Template pour afficher la page de visualisations de données.
+    """
+    return render_template('pages/datavisualisations.html', sous_titre="Visualisations de données")
 
 @app.route("/graph1", methods=['GET', 'POST'])
 def graph1():
-    return render_template("pages/graph1.html")
+    """
+    Route pour afficher un graphique représentant le pourcentage d'établissements rejetant des polluants par secteur d'activité.
+
+    Returns:
+        template: Template pour afficher le graphique.
+    """
+    return render_template("pages/graph1.html", sous_titre="Pourcentage d’établissements rejetant des polluants par secteur d’activité, à l'échelle nationale")
 
 @app.route("/graph1_donnees", methods=['GET', 'POST'])
 def graph1_donnees():
+    """
+    Route pour fournir les données nécessaires à l'affichage du graphique `/graph1`.
+
+    Returns:
+        json: Données au format JSON.
+    """
     total_etab = db.session.query(func.count(Etablissements.id)).scalar()
     donnees_brutes = db.session.query(Etablissements.secteur_na38, func.count(Etablissements.id)) \
         .group_by(Etablissements.secteur_na38) \
@@ -295,12 +319,24 @@ def graph1_donnees():
 
 @app.route("/graph2", methods=['GET', 'POST'])
 def graph2():
+    """
+    Route pour afficher une visualisation du nombre d'établissements en fonction du milieu pollué par département.
+
+    Returns:
+        template: Template pour afficher le graphique.
+    """
     departements = ['Ain', 'Aisne', 'Allier', 'Alpes-de-Haute-Provence', 'Alpes-Maritimes', 'Ardèche', 'Ardennes', 'Ariège', 'Aube', 'Aude', 'Aveyron', 'Bouches-du-Rhône', 'Calvados', 'Cantal', 'Charente', 'Charente-Maritime', 'Cher', 'Corrèze', 'Corse-du-Sud', 'Côte-d\'Or', 'Côtes-d\'Armor', 'Creuse', 'Deux-Sèvres', 'Dordogne', 'Doubs', 'Drôme', 'Essonne', 'Eure', 'Eure-et-Loir', 'Finistère', 'Gard', 'Gers', 'Gironde', 'Guadeloupe', 'Guyane', 'Haut-Rhin', 'Haute-Corse', 'Haute-Garonne', 'Haute-Loire', 'Haute-Marne', 'Haute-Saône', 'Haute-Savoie', 'Haute-Vienne', 'Hautes-Alpes', 'Hautes-Pyrénées', 'Hauts-de-Seine', 'Hérault', 'Ille-et-Vilaine', 'Indre', 'Indre-et-Loire', 'Isère', 'Jura', 'La Réunion', 'Landes', 'Loir-et-Cher', 'Loire', 'Loire-Atlantique', 'Loiret', 'Lot', 'Lot-et-Garonne', 'Lozère', 'Maine-et-Loire', 'Manche', 'Marne', 'Martinique', 'Mayenne', 'Mayotte', 'Meurthe-et-Moselle', 'Meuse', 'Morbihan', 'Moselle', 'Nièvre', 'Nord', 'Oise', 'Orne', 'Paris', 'Pas-de-Calais', 'Puy-de-Dôme', 'Pyrénées-Atlantiques', 'Pyrénées-Orientales', 'Rhône', 'Saint-Barthélemy', 'Saint-Martin', 'Saint-Pierre-et-Miquelon', 'Saône-et-Loire', 'Sarthe', 'Savoie', 'Seine-et-Marne', 'Seine-Maritime', 'Seine-Saint-Denis', 'Somme', 'Tarn', 'Tarn-et-Garonne', 'Territoire de Belfort', 'Val-d\'Oise', 'Val-de-Marne', 'Var', 'Vaucluse', 'Vendée', 'Vienne', 'Vosges', 'Yonne', 'Yvelines']
    
-    return render_template("pages/graph2.html", departements=departements)
+    return render_template("pages/graph2.html", sous_titre="Nombre d'établissements en fonction du milieu pollué par département", departements=departements)
 
 @app.route("/graph2_donnees", methods=['GET', 'POST'])
 def graph2_donnees():
+    """
+    Route pour fournir les données nécessaires à l'affichage de la visualisation `/graph2`.
+
+    Returns:
+        json: Données au format JSON.
+    """
     # Compte le nombre d'établissements par département
     etab_par_departement = db.session.query(Departements.nom, func.count(Etablissements.id)) \
         .join(Etablissements, Departements.id == Etablissements.departement) \

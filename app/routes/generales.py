@@ -1,6 +1,7 @@
 from ..app import app, db
 from flask import Flask, render_template, request, abort, flash, jsonify
-from sqlalchemy import or_, func, text
+from sqlalchemy import func
+import json
 from ..models.georisques import Etablissements, Departements, Polluants
 from ..models.formulaires import Recherche
 
@@ -298,24 +299,11 @@ def graph2():
 
 @app.route("/graph2_donnees", methods=['GET', 'POST'])
 def graph2_donnees():
-    # Compte le nombre total d'établissements
-    total_etab = db.session.query(func.count(Etablissements.id)).scalar()
-
     # Compte le nombre d'établissements par département
     etab_par_departement = db.session.query(Departements.nom, func.count(Etablissements.id)) \
         .join(Etablissements, Departements.id == Etablissements.departement) \
         .group_by(Departements.nom) \
         .all()
-
-    pourcentage_etab_par_département = []
-
-    # Calcul le pourcentage d'établissements dans chaque département par rapport au total national
-    for departement, occurrences in etab_par_departement:
-        pourcentage = (occurrences / total_etab) * 100
-        pourcentage_etab_par_département.append({
-            "departement": departement,
-            "pourcentage": pourcentage
-        })
 
     # Compte le nombre d'établissements par type de milieu pollué dans chaque département
     pourcentage_milieu_par_departement = db.session.query(Departements.nom, Etablissements.milieu_pollué, func.count(Etablissements.id)) \
@@ -325,16 +313,12 @@ def graph2_donnees():
 
     donnees = []
 
-    # Calcul le pourcentage d'établissements rejetant chaque type de milieu pollué dans chaque département
-    for departement, milieu_pollué, occurrences in pourcentage_milieu_par_departement:
-        # Trouve le nombre total d'établissements dans ce département rejetant n'importe quel type de milieu pollué
-        total_etab_dept = next((item["pourcentage"] for item in pourcentage_etab_par_département if item["departement"] == departement), None)
-        if total_etab_dept is not None:
-            pourcentage = (occurrences / total_etab_dept) * 100
-            donnees.append({
-                "departement": departement,
-                "milieu_pollué": milieu_pollué,
-                "pourcentage": pourcentage
-            })
+    # Parcoure les résultats de la requête et ajouter chaque ligne de résultat à la liste
+    for departement, milieu_pollué, nbre_etab in pourcentage_milieu_par_departement:
+        donnees.append({
+            "departement": departement,
+            "milieu_pollue": milieu_pollué if milieu_pollué != "" else "Non-reference",
+            "nombre_etablissements": nbre_etab
+        })
 
     return jsonify(donnees)

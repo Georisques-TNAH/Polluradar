@@ -1,92 +1,90 @@
 {% extends "partials/conteneur.html" %}
 
 {% block body %}
-
 <div class="container">
-    <h1 style="text-align: center;">Titre</h1>
+    <h1 style="text-align: center;">Nombre d'établissements en fonction du milieu pollué par département</h1>
+    <ul id="liste" style="text-align: center;"></ul>
 </div>
-<canvas id="graphique" style="width: 1200px;"></canvas>
 
 <script>
-    const ctx = document.getElementById('graphique').getContext('2d');
+    // Charger les données des établissements par département
+    fetch('/graph2_donnees')
+        .then(response => response.json())
+        .then(data => {
+            // Dictionnaire pour stocker les données par département
+            var dicoDepartement = {};
 
-    var gradient = ctx.createLinearGradient(0, 0, 600, 0);
-    gradient.addColorStop(0, 'rgba(255, 0, 0, 0)'); // Couleur de départ (rouge avec transparence)
-    gradient.addColorStop(1, 'rgba(255, 0, 0, 0.9)'); // Couleur de fin (rouge plus foncé avec transparence)
-
-
-    // Création du graphique
-    var graphique = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: [],
-            datasets: [{
-            label: "Pourcentage d’établissements rejetant des polluants par secteur d’activité, à l'échelle nationale",
-            data: [],
-            backgroundColor: gradient,
-            borderWidth: 1, // Largeur de la bordure des barres
-            borderColor: 'rgba(255, 0, 0, 1)', // Couleur de la bordure des barres (rouge)
-        }]
-        },
-        options: {
-            indexAxis: 'y',
-            elements: {
-            bar: {
-                borderWidth: 2,
-            }
-            },
-            layout: {
-                margin: {
-                    left: 20,
-                    right: 20,
-                    top: 20,
-                    bottom: 20
+            // Regrouper les données par département
+            data.forEach(entry => {
+                if (!dicoDepartement[entry.departement]) {
+                    dicoDepartement[entry.departement] = [];
                 }
-            },
-            responsive: true,
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'right', // Position de la légende (peut être 'top', 'bottom', 'left' ou 'right')
-                    labels: {
-                        boxWidth: 20, // Largeur de la boîte de la légende
-                        fontSize: 8, // Taille de la police de la légende
-                        title: {
-                            display: true,
-                            text: "Pourcentage d’établissements rejetant des polluants par secteur d’activité, à l'échelle nationale'"
-                        }        
-                    }
-                }
-            }
-        }
-    });
+                dicoDepartement[entry.departement].push({ milieu_pollue: entry.milieu_pollue, nombre_etablissements: entry.nombre_etablissements });
+            });
 
-    fetch('{{url_for("graph2_donnees")}}')
-    .then((response) => {
-        return response.json();
-    })
-    .then((data) => {
-        // Calcul des secteurs et pourcentages
-        var departement = [];
-        var milieu = [];
-        var pourcentage = [];
+            // Parcoure les données pour chaque département
+            Object.keys(dicoDepartement).forEach(departement => {
+                // Création d'un tableau pour stocker les données du camembert
+                var donneesCamembert = {
+                    labels: [],
+                    data: [],
+                    backgroundColor: ['#8a74ff', '#e24545', '#45e28f', '#dde245', '#45d7e2', '#cb45e2', '#e24585', '#e2a545'],
+                };
 
-        // Itération sur le retour de l'URL graph2_donnees
-        for (var i = 0; i < data.length; i++) {
-            // Comme en Python, on remplit ici les tableaux
-            departement.push(data[i]["département"]);
-            milieu.push(data[i]["milieu_pollué"]);
-            pourcentage.push(data[i]["pourcentage"]);
-        }
-        
-        // Mise à jour des données du graphique
-        graphique.data.labels = departement;
-        graphique.data.datasets[0].data = pourcentage;
-        // graphique.data.datasets[0].data = milieu;
+                // Nombre total d'établissements dans le département
+                var totalEtablissements = dicoDepartement[departement].reduce((total, entry) => total + entry.nombre_etablissements, 0);
 
-        // Mise à jour du graphique une fois les données calculées et insérées dans le graphique
-        graphique.update();
-    });
+                // Ajoute les données du camembert pour chaque milieu pollué
+                dicoDepartement[departement].forEach(entry => {
+                    donneesCamembert.labels.push(entry.milieu_pollue);
+                    donneesCamembert.data.push(entry.nombre_etablissements);
+                });
+
+                // Création d'un canvas pour le camembert
+                var canvas = document.createElement('canvas');
+                canvas.width = 20;
+                canvas.height = 20;
+
+                // Implémentation du camembert dans le canvas
+                var ctx = canvas.getContext('2d');
+                var chart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: donneesCamembert.labels,
+                        datasets: [{
+                            data: donneesCamembert.data,
+                            backgroundColor: donneesCamembert.backgroundColor,
+                        }],
+                    },
+                });
+
+                // Création d'une div pour contenir le camembert et le titre du département
+                var container = document.createElement('div');
+
+                // Titre pour le département
+                var title = document.createElement('h3');
+                title.textContent = departement;
+                title.style.textAlign = 'center';
+
+
+                // Ajout du camembert et de son titre au conteneur
+                container.appendChild(title);
+                container.appendChild(canvas);
+
+                // Création d'une puce pour chaque camembert
+                var listItem = document.createElement('li');
+                listItem.classList.add('camembert');
+                listItem.appendChild(container);
+
+                // Ajout de la puce qui vient d'être créée à la liste de camemberts
+                document.getElementById('liste').appendChild(listItem);
+            });
+
+        // Message d'erreur affiché dans la console en cas de problème de chargement des données
+        })
+        .catch(error => {
+            console.error('Erreur lors du chargement des données :', error);
+        });
 </script>
 
 {% endblock %}

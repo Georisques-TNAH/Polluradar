@@ -15,12 +15,15 @@
                         &laquo;
                 </a>
                 {% endif %}
-
+                
+                <!-- Boucle pour afficher chaque établissement -->
                 {% for etablissement in etablissements.items %}
+                 <!-- Élément de la liste -->
                 <a class="list-group-item list-group-item-action {% if loop.first %}active{% endif %}" id="list-{{etablissement.id}}-list" data-toggle="list"
                     href="#list-{{etablissement.id}}" role="tab" aria-controls="{{etablissement.id}}">{{etablissement.nom}}</a>
                 {% endfor %}
 
+                <!-- Bouton pour aller à la page suivante -->
                 {%if etablissements.next_num %}
                 <a class="list-group-item list-group-item-action" id="list-list-next" 
                     href="{{ url_for('etablissements', page=etablissements.next_num) }}" class="btn btn-outline-dark 
@@ -32,12 +35,15 @@
         </div>
         <div class="col-8">
             <div class="tab-content" id="nav-tabContent">
+                 <!-- Boucle pour afficher les détails de chaque établissement -->
                 {% for etablissement in etablissements.items %}
                 <div class="tab-pane fade {% if loop.first %}show active{% endif %}" id="list-{{etablissement.id}}" role="tabpanel"
                     aria-labelledby="list-{{etablissement.id}}-list">
+                    <!-- Lien pour voir les détails de l'établissement -->
                     <a class="css_links" href="{{ url_for('un_etablissement', nom_etablissement=etablissement.nom) }}"> Voir les données de {{etablissement.nom}}</a>
                     <br>
-                    {{etablissement.commune}} 
+                     <!-- Affichage de la commune de l'établissement -->
+                     {{etablissement.commune}} 
                 </div>
                 {% endfor %}
             </div>

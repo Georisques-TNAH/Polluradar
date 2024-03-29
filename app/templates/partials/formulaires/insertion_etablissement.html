@@ -1,6 +1,8 @@
 <form action="{{ url_for('insertion_etablissement') }}" method="post" name="insertion_etablissement">
     {{ form.hidden_tag() }}
-
+    
+    <!-- Champs pour les différents attributs de chaque établissement. Les éléments obligatoires sont indiqués comme tels. -->
+    
     <div class="form-group">
         <label for="nom">Nom de l'établissement <small><i>(obligatoire)</i></small></label>
         {{ form.nom(class_="form-control", placeholder="Nom de l'établissement") }}
@@ -90,6 +92,6 @@
         {{ form.departement(class_="form-control", placeholder="Département") }}
         <small id="departement" class="form-text text-muted">Entrez le numéro du département</small>
     </div>
-
+    <!-- Bouton pour soumettre le formulaire -->
     <p><input type="submit" value="Insérer"></p>
 </form>

@@ -5,29 +5,34 @@
     <h1>Visualisations de données produites avec Tableau</h1>
 </div>
 <div id="dataviz" style="position: absolute; left:-20%; transform: scale(0.9);">
-
+    <!-- La visualisation Tableau sera rendue ici -->
 </div>
 
+<!-- Lien vers Tableau Public -->
 <div style="font-size: 0.7em;">
     <p>Pour consulter ce tableau de bord en ligne, cliquez sur ce
     <a href="https://public.tableau.com/app/profile/ronan.vichot/viz/PolluRadar-Datavisualisationscomplet/Tableaudebord">lien vers Tableau Public</a>.</p>
 </div>
 
+<!-- Script JavaScript pour initialiser la visualisation Tableau -->
 <script type="text/javascript">
     function initDataviz() {
         var containerDiv = document.getElementById("dataviz");
+        // URL de la visualisation Tableau
         var url = "https://public.tableau.com/views/PolluRadar-Datavisualisationscomplet/Tableaudebord?:language=fr-FR&:sid=&:display_count=n&:origin=viz_share_link";
         var options = {
+            // Options de la visualisation Tableau
             width: "1600px",
             height: "1000px",
-            hideToolbar: true,
-            hideTabs: true,
+            hideToolbar: true, // Masquer la barre d'outils Tableau
+            hideTabs: true, // Masquer les onglets Tableau
             onFirstInteractive: function () {
                 console.log("Les data visualisations ont été chargées avec succès.");
             }
         };
         var viz = new tableau.Viz(containerDiv, url, options);
     }
+    // Événement DOMContentLoaded pour exécuter la fonction initDataviz après le chargement du DOM
     document.addEventListener("DOMContentLoaded", initDataviz);
 
 </script>

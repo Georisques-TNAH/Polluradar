@@ -15,7 +15,7 @@
                         &laquo;
                 </a>
                 {% endif %}
-
+                <!-- Liste des polluants -->
                 {% for polluant in donnees.items %}
                 {% if (donnees.items).index(polluant) == 0 %}
                 <a class="list-group-item list-group-item-action active" id="list-{{polluant.id}}-list" data-toggle="list"
@@ -35,19 +35,25 @@
                 {% endif %}
             </div>
         </div>
+        <!-- Colonne pour afficher les informations sur le polluant sélectionné -->
         <div class="col-8">
             <div class="tab-content" id="nav-tabContent">
+                <!-- Boucle pour chaque polluant -->
                 {% for polluant in donnees.items %}
                 {% if (donnees.items).index(polluant) == 0 %}
+                <!-- Onglet actif pour le premier polluant -->
                 <div class="tab-pane fade show active" id="list-{{polluant.id}}" role="tabpanel"
                     aria-labelledby="list-{{polluant.id}}-list">
                     <ul>
+                    <!-- Lien pour télécharger la fiche INRS -->
                     <li><a class="css_links" href="{{polluant.fiche_inrs}}">Télécharger la fiche INRS du {{polluant.nom}}</a></li>
                     <br>
+                    <!-- Lien pour voir les établissements rejetant ce polluant -->
                     <li><a class="css_links" href="{{ url_for('un_polluant', nom_polluant=polluant.nom) }}"> Voir les {{donnees_generales[polluant.nom] | length}} établissement rejetant du {{polluant.nom}}</a></li>
                 </ul>
                 </div>
                 {% else %}
+                <!-- Onglet pour les autres polluants -->
                 <div class="tab-pane fade " id="list-{{polluant.id}}" role="tabpanel"
                     aria-labelledby="list-{{polluant.id}}-list">
                     <ul>

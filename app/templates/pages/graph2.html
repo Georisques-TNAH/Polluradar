@@ -3,6 +3,20 @@
 {% block body %}
 <div class="container">
     <h1 style="text-align: center;">Nombre d'établissements en fonction du milieu pollué par département</h1>
+
+    <!-- Menu déroulant pour choisir le département -->
+    <div style="text-align: center;">
+        <label for="selectDepartement">Choisir un département:</label>
+        <select id="selectDepartement">
+            <option value="">Tous les départements</option>
+            <!-- Option pour chaque département -->
+            {% for departement in departements %}
+                <option value="{{ departement }}">{{ departement }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <!-- Liste des camemberts pour les départements -->
     <ul id="liste" style="text-align: center;"></ul>
 </div>
 
@@ -11,7 +25,7 @@
     fetch('/graph2_donnees')
         .then(response => response.json())
         .then(data => {
-            // Dictionnaire pour stocker les données par département
+            // Stockage des données par département
             var dicoDepartement = {};
 
             // Regrouper les données par département
@@ -22,66 +36,84 @@
                 dicoDepartement[entry.departement].push({ milieu_pollue: entry.milieu_pollue, nombre_etablissements: entry.nombre_etablissements });
             });
 
-            // Parcoure les données pour chaque département
-            Object.keys(dicoDepartement).forEach(departement => {
-                // Création d'un tableau pour stocker les données du camembert
-                var donneesCamembert = {
-                    labels: [],
-                    data: [],
-                    backgroundColor: ['#8a74ff', '#e24545', '#45e28f', '#dde245', '#45d7e2', '#cb45e2', '#e24585', '#e2a545'],
-                };
+            // Fonction pour afficher les camemberts en fonction du département sélectionné
+            function afficherCamemberts(departementSelectionne) {
+                // Effacer la liste précédente des camemberts
+                document.getElementById('liste').innerHTML = '';
 
-                // Nombre total d'établissements dans le département
-                var totalEtablissements = dicoDepartement[departement].reduce((total, entry) => total + entry.nombre_etablissements, 0);
+                // Parcourir les données des départements
+                Object.keys(dicoDepartement).forEach(departement => {
+                    // Vérifier si le département sélectionné correspond au département actuel ou si aucun département n'est sélectionné
+                    if (departement === departementSelectionne || !departementSelectionne) {
+                        // Création d'un tableau pour stocker les données du camembert
+                        var donneesCamembert = {
+                            labels: [],
+                            data: [],
+                            backgroundColor: ['#8a74ff', '#e24545', '#45e28f', '#dde245', '#45d7e2', '#cb45e2', '#e24585', '#e2a545'],
+                        };
 
-                // Ajoute les données du camembert pour chaque milieu pollué
-                dicoDepartement[departement].forEach(entry => {
-                    donneesCamembert.labels.push(entry.milieu_pollue);
-                    donneesCamembert.data.push(entry.nombre_etablissements);
+                        // Nombre total d'établissements dans le département
+                        var totalEtablissements = dicoDepartement[departement].reduce((total, entry) => total + entry.nombre_etablissements, 0);
+
+                        // Ajouter les données du camembert pour chaque milieu pollué
+                        dicoDepartement[departement].forEach(entry => {
+                            donneesCamembert.labels.push(entry.milieu_pollue);
+                            donneesCamembert.data.push(entry.nombre_etablissements);
+                        });
+
+                        // Création d'un canvas pour le camembert
+                        var canvas = document.createElement('canvas');
+                        canvas.width = 20;
+                        canvas.height = 20;
+
+                        // Implémentation du camembert dans le canvas
+                        var ctx = canvas.getContext('2d');
+                        var chart = new Chart(ctx, {
+                            type: 'pie',
+                            data: {
+                                labels: donneesCamembert.labels,
+                                datasets: [{
+                                    data: donneesCamembert.data,
+                                    backgroundColor: donneesCamembert.backgroundColor,
+                                }],
+                            },
+                        });
+
+                        // Création d'une div pour contenir le camembert et le titre du département
+                        var container = document.createElement('div');
+
+                        // Titre pour le département
+                        var title = document.createElement('h3');
+                        title.textContent = departement;
+                        title.style.textAlign = 'center';
+
+                        // Ajout du camembert et de son titre au conteneur
+                        container.appendChild(title);
+                        container.appendChild(canvas);
+
+                        // Création d'une puce pour chaque camembert
+                        var listItem = document.createElement('li');
+                        listItem.classList.add('camembert');
+                        listItem.appendChild(container);
+
+                        // Ajout de la puce qui vient d'être créée à la liste de camemberts
+                        document.getElementById('liste').appendChild(listItem);
+                    }
                 });
+            }
 
-                // Création d'un canvas pour le camembert
-                var canvas = document.createElement('canvas');
-                canvas.width = 20;
-                canvas.height = 20;
-
-                // Implémentation du camembert dans le canvas
-                var ctx = canvas.getContext('2d');
-                var chart = new Chart(ctx, {
-                    type: 'pie',
-                    data: {
-                        labels: donneesCamembert.labels,
-                        datasets: [{
-                            data: donneesCamembert.data,
-                            backgroundColor: donneesCamembert.backgroundColor,
-                        }],
-                    },
-                });
-
-                // Création d'une div pour contenir le camembert et le titre du département
-                var container = document.createElement('div');
-
-                // Titre pour le département
-                var title = document.createElement('h3');
-                title.textContent = departement;
-                title.style.textAlign = 'center';
-
-
-                // Ajout du camembert et de son titre au conteneur
-                container.appendChild(title);
-                container.appendChild(canvas);
-
-                // Création d'une puce pour chaque camembert
-                var listItem = document.createElement('li');
-                listItem.classList.add('camembert');
-                listItem.appendChild(container);
-
-                // Ajout de la puce qui vient d'être créée à la liste de camemberts
-                document.getElementById('liste').appendChild(listItem);
+            // Écouter les changements de sélection dans le menu déroulant
+            document.getElementById('selectDepartement').addEventListener('change', function(event) {
+                // Récupérer la valeur sélectionnée dans le menu déroulant
+                var departementSelectionne = event.target.value;
+                // Afficher les camemberts en fonction du département sélectionné
+                afficherCamemberts(departementSelectionne);
             });
 
-        // Message d'erreur affiché dans la console en cas de problème de chargement des données
+            // Afficher tous les camemberts au chargement initial de la page
+            afficherCamemberts();
         })
+        // Afficher un message d'erreur en cas de problème lors du chargement des données
         .catch(error => {
             console.error('Erreur lors du chargement des données :', error);
         });

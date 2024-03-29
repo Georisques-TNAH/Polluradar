@@ -10,7 +10,6 @@
   {% block css %}{%endblock%}
 
   <style>    
-    /*the container must be positioned relative:*/
     .autocomplete {
       position: relative;
       display: inline-block;
@@ -40,7 +39,6 @@
       border-bottom: none;
       border-top: none;
       z-index: 99;
-      /*position the autocomplete items to be the same width as the container:*/
       top: 100%;
       left: 0;
       right: 0;
@@ -53,12 +51,10 @@
       border-bottom: 1px solid #d4d4d4; 
     }
     
-    /*when hovering an item:*/
     .autocomplete-items div:hover {
       background-color: #e9e9e9; 
     }
     
-    /*when navigating through the items using the arrow keys:*/
     .autocomplete-active {
       background-color: DodgerBlue !important; 
       color: #ffffff; 
@@ -67,10 +63,13 @@
 </head>
 
 <body>
+  <!-- Image de fond -->
   <div class="bg-image" style="position: relative; height: 450px; width:100%;overflow:hidden;margin-top: -200px;background-image: url('https://medias.gazette-drouot.com/prod/medias/mediatheque/98230.jpg');background-size: cover">
   </div>
   
+  <!-- Barre de navigation -->
   <nav class="navbar navbar-expand-lg  fixed-top navbar-light" style="background-color: #A2C7E1;">
+    <!-- Lien vers la page d'accueil -->
     <a class=" navbar-brand" href="{{ url_for('accueil') }}">Polluradar</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -78,6 +77,7 @@
     </button>
   
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <!-- Liste des liens vers différentes parties de l'application -->
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
           <a class="nav-link" href="{{ url_for('etablissements') }}">Etablissements</a>
@@ -95,7 +95,8 @@
             <a class="nav-link" href="{{ url_for('carte') }}">Carte</a>
           </li>
   
-          <li class="nav-item dropdown">
+          <!-- Dropdown pour les fonctionnalités de modification -->
+         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="false">
               Modifications
@@ -106,6 +107,7 @@
             </div>
           </li>
 
+          <!-- Dropdown pour les visualisations de données -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="false">
@@ -114,9 +116,11 @@
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" href="{{ url_for('datavisualisations') }}">Visualisations de données produites avec Tableau</a>
               <a class="dropdown-item" href="{{ url_for('graph1') }}">Pourcentage d'établissements rejetant des polluants par secteur</a>
+              <a class="dropdown-item" href="{{ url_for('graph2') }}">Nombre d'établissements en fonction du milieu pollué par département</a>
             </div>
           </li>
       </ul>
+      <!-- Inclusion du formulaire de recherche rapide -->
       {% include "partials/formulaires/recherche_rapide.html" %}
     </div>
   

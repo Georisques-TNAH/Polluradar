@@ -8,19 +8,25 @@
     <div class="row">
         <div class="col-4">
             <div class="list-group" id="list-tab" role="tablist">
+                <!-- Boucle pour afficher chaque établissement comme un élément de la liste -->
                 {% for etablissement in donnees.items %}
-                <a class="list-group-item list-group-item-action {% if loop.first %}active{% endif %}" id="list-{{etablissement.id}}-list" data-toggle="list"
+                <!-- Élément de la liste avec un lien pour afficher les détails -->
+               <a class="list-group-item list-group-item-action {% if loop.first %}active{% endif %}" id="list-{{etablissement.id}}-list" data-toggle="list"
                     href="#list-{{etablissement.id}}" role="tab" aria-controls="{{etablissement.id}}">{{etablissement.nom}}</a>
                 {% endfor %}
             </div>
         </div>
+        <!-- Colonne pour afficher les détails de l'établissement sélectionné -->
         <div class="col-8">
             <div class="tab-content" id="nav-tabContent">
+                <!-- Boucle pour afficher les détails de chaque établissement dans un onglet -->
                 {% for etablissement in donnees.items %}
                 <div class="tab-pane fade {% if loop.first %}show active{% endif %}" id="list-{{etablissement.id}}" role="tabpanel"
                     aria-labelledby="list-{{etablissement.id}}-list">
+                    <!-- Lien pour afficher les données détaillées de l'établissement -->
                     <a class="css_links" href="{{ url_for('un_etablissement', nom_etablissement=etablissement.nom) }}"> Voir les données de {{etablissement.nom}}</a>
                     <br>
+                    <!-- Affichage de la commune de l'établissement -->
                     {{etablissement.commune}}
                 </div>
                 {% endfor %}

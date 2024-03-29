@@ -295,7 +295,9 @@ def graph1_donnees():
 
 @app.route("/graph2", methods=['GET', 'POST'])
 def graph2():
-    return render_template("pages/graph2.html")
+    departements = ['Ain', 'Aisne', 'Allier', 'Alpes-de-Haute-Provence', 'Alpes-Maritimes', 'Ardèche', 'Ardennes', 'Ariège', 'Aube', 'Aude', 'Aveyron', 'Bouches-du-Rhône', 'Calvados', 'Cantal', 'Charente', 'Charente-Maritime', 'Cher', 'Corrèze', 'Corse-du-Sud', 'Côte-d\'Or', 'Côtes-d\'Armor', 'Creuse', 'Deux-Sèvres', 'Dordogne', 'Doubs', 'Drôme', 'Essonne', 'Eure', 'Eure-et-Loir', 'Finistère', 'Gard', 'Gers', 'Gironde', 'Guadeloupe', 'Guyane', 'Haut-Rhin', 'Haute-Corse', 'Haute-Garonne', 'Haute-Loire', 'Haute-Marne', 'Haute-Saône', 'Haute-Savoie', 'Haute-Vienne', 'Hautes-Alpes', 'Hautes-Pyrénées', 'Hauts-de-Seine', 'Hérault', 'Ille-et-Vilaine', 'Indre', 'Indre-et-Loire', 'Isère', 'Jura', 'La Réunion', 'Landes', 'Loir-et-Cher', 'Loire', 'Loire-Atlantique', 'Loiret', 'Lot', 'Lot-et-Garonne', 'Lozère', 'Maine-et-Loire', 'Manche', 'Marne', 'Martinique', 'Mayenne', 'Mayotte', 'Meurthe-et-Moselle', 'Meuse', 'Morbihan', 'Moselle', 'Nièvre', 'Nord', 'Oise', 'Orne', 'Paris', 'Pas-de-Calais', 'Puy-de-Dôme', 'Pyrénées-Atlantiques', 'Pyrénées-Orientales', 'Rhône', 'Saint-Barthélemy', 'Saint-Martin', 'Saint-Pierre-et-Miquelon', 'Saône-et-Loire', 'Sarthe', 'Savoie', 'Seine-et-Marne', 'Seine-Maritime', 'Seine-Saint-Denis', 'Somme', 'Tarn', 'Tarn-et-Garonne', 'Territoire de Belfort', 'Val-d\'Oise', 'Val-de-Marne', 'Var', 'Vaucluse', 'Vendée', 'Vienne', 'Vosges', 'Yonne', 'Yvelines']
+   
+    return render_template("pages/graph2.html", departements=departements)
 
 @app.route("/graph2_donnees", methods=['GET', 'POST'])
 def graph2_donnees():

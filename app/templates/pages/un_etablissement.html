@@ -13,6 +13,7 @@
         <div class="card">
             <div class="card-header" id="headinggeneralites">
                 <h5 class="mb-0">
+                    <!-- Bouton pour afficher/cacher la section -->
                     <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapsegeneralites"
                         aria-expanded="false" aria-controls="collapsegeneralites">
                         Généralités
@@ -72,12 +73,11 @@
                     <p><b>Adresse </b>: {{donnees.adresse}}</p>
                     <p><b>Code postal </b>: {{donnees.code_postal}}</p>
                     <p><b>Commune </b>: {{donnees.commune}}</p>
-                    <!--<p><b>Département </b>: {{donnees.departement}}</p>-->
                 </div>
             </div>
         </div>
 
-        <!-- coordonnées -->
+        <!-- coordonnées (optionnelles) -->
         {% if  donnees.latitude %}
         <div class="card">
             <div class="card-header" id="headingcoordonnees">

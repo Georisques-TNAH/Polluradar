@@ -33,7 +33,7 @@ Coller les lignes suivantes dans le `.env` en les adaptant :
     WTF_CSRF_ENABLE=True
     SECRET_KEY=[CRÉER UNE CLÉ SECRÈTE]
 Sur Linux, l'URI de la base de données est du type : sqlite://///[chemin personnel]/polluradar.db
-### Etape 5 : Installer les requirements (dépendances ?)
+### Etape 5 : Installer les requirements
 Entrez la commande suivante dans votre terminal :
 
     source env/bin/activate

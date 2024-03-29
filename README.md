@@ -21,8 +21,10 @@ Entrez la commande suivante dans votre terminal :
     virtualenv env -p python3
 
 ### Etape 4 : Saisir les variables d'environnement 
-Créer un fichier texte nommé `.env` au même niveau que le dossier `env` précédemment créé. 
-Coller les lignes suivantes dans le `.env` en les adaptant : 
+Créer un fichier texte nommé `.env` au même niveau que le dossier `env` précédemment créé en collant la commande suivante dans votre terminal : 
+
+    touch .env 
+Coller les lignes suivantes dans le `.env` en les adaptant comme indiqué : 
 
     DEBUG=True
     SQLALCHEMY_DATABASE_URI=[URI DE LA BASE DE DONNÉES SQLITE]

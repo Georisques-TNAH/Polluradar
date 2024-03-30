@@ -34,13 +34,13 @@ def etablissements(page=1):
 @app.route("/etablissements/<string:nom_etablissement>")
 def un_etablissement(nom_etablissement:str):
     """
-    Route pour afficher les détails d'un établissement spécifique.
+    Route pour afficher les informations d'un établissement spécifique.
 
     Args:
         nom_etablissement (str): Le nom de l'établissement.
 
     Returns:
-        template: Template pour afficher les détails de l'établissement.
+        template: Template pour afficher les informations de l'établissement.
     """
     return render_template("pages/un_etablissement.html", 
         sous_titre=nom_etablissement, 
@@ -221,7 +221,7 @@ def recherche():
 @app.route("/autocompletion/<string:chaine>")
 def autocompletion(chaine=None):
     """
-    Route pour l'autocomplétion des communes.
+    Route pour l'autocomplétion des noms de communes.
 
     Args:
         chaine (str): La chaîne pour laquelle l'autocomplétion est effectuée.

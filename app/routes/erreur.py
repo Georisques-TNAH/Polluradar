@@ -27,6 +27,5 @@ def internal_error(error):
     Returns:
         tuple: Un tuple contenant le rendu du template 'erreurs/500.html' et le code d'erreur correspondant.
     """
-    # Effectue un rollback de la session de base de données en cas d'erreur interne
     db.session.rollback()
     return render_template('erreurs/500.html'), error.code
